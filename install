@@ -203,4 +203,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
     fi
 fi
 
+## Setup Mac Settings
+source ~/.macos
+
 pecho "Done!" 2
