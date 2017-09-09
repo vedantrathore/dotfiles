@@ -86,9 +86,7 @@ export http_proxy="http://vedant.rathore:1070305@202.141.80.24:3128/"
 export https_proxy="http://vedant.rathore:1070305@202.141.80.24:3128/"
 #export http_proxy="http://172.16.53.111:5555/"
 #export https_proxy="http://172.16.53.111:5555/"
-alias sip='sudo -E pip install'
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-alias la="exa -abghl --git --color=automatic"
