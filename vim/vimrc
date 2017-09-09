@@ -1,0 +1,220 @@
+set nocompatible              " be iMproved, required
+
+" ----------------------------------------------------------------------------
+"   Plug
+" ----------------------------------------------------------------------------
+
+" Install vim-plug if we don't already have it
+if empty(glob("~/.vim/autoload/plug.vim"))
+    " Ensure all needed directories exist
+    if !isdirectory($HOME."/.vim/plugged")
+        silent call mkdir($HOME."/.vim/plugged", "p")
+    endif
+    if !isdirectory($HOME."/.vim/autoload")
+        silent call mkdir($HOME."/.vim/autoload", "p")
+    endif
+    " Download the actual plugin manager
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+endif
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'tmhedberg/SimpylFold'
+Plug 'lilydjwg/colorizer'
+Plug 'scrooloose/nerdtree'
+Plug 'Valloric/YouCompleteMe', { 'do': './plugged/YouCompleteMe/install.py --clang-completer --tern-completer' }
+Plug 'scrooloose/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'altercation/vim-colors-solarized'
+
+call plug#end()
+
+" ----------------------------------------------------------------------------
+"   Base Options
+" ----------------------------------------------------------------------------
+
+" Make backspace behave in a sane manner.
+set backspace=indent,eol,start
+
+" Centralize backups, swapfiles, and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+          set undodir=~/.vim/undo
+endif
+
+" Don't create backups when editing files in certain directories
+set backupskip=/tmp/*,/private/tmp/*
+
+" Enable file type detection and do language-dependent indenting.
+filetype plugin indent on
+
+" reload files when changed on disk, i.e. via `git checkout`
+set autoread
+
+" UTF8
+set encoding=utf-8
+
+" Allow hidden buffers, don't limit to 1 file per window/split
+set hidden
+
+" Default is 8, my machines can handle quite a bit more
+set history=100
+
+" Incase you forgot to sudo
+cnoremap w!! %!sudo tee > /dev/null %
+
+" Searching
+set incsearch " search as characters are entered
+set hlsearch " highlight matches
+nnoremap <leader><leader> :nohlsearch<CR> " turn off search hl
+set ignorecase  " case-insensitive search
+
+" Folding
+set foldenable " enable folding
+let g:SimpylFold_docstring_preview=1
+set foldlevelstart=10 " open most folds by default
+nnoremap <space> za " space open/closes folds
+set foldmethod=indent " fold based on indent level
+
+" ----------------------------------------------------------------------------
+"   Visual
+" ----------------------------------------------------------------------------
+
+" Switch syntax highlighting on
+syntax on
+
+" Color/theme
+set background=dark
+colorscheme solarized
+highlight LineNr ctermbg=235
+
+" show trailing whitespace
+set list
+set listchars=tab:▸\ ,trail:▫
+
+"Remove all trailing whitespace by pressing F5
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
+" Show last command entered
+set showcmd
+
+" Highlight current line
+set cursorline
+
+" Visual autocomplete for command menu
+set wildmenu
+set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
+set wildmode=longest,list,full
+
+" highlight matching [{()}]
+set showmatch
+
+" Show line numbers
+set number
+
+" show where you are
+set ruler
+
+" show context above/below cursorline
+set scrolloff=3
+
+" ----------------------------------------------------------------------------
+"   Tabs
+" ----------------------------------------------------------------------------
+
+" Number of visual spaces per TAB
+set tabstop=4
+
+" Number of spaces in tab when editing
+set softtabstop=4
+
+" tabs => spaces
+set expandtab
+
+" ----------------------------------------------------------------------------
+"   Keymappings
+" ----------------------------------------------------------------------------
+
+" Enter to insert blank line below current, Shift+Enter to insert it above
+map <Enter> o<ESC>
+map <S-Enter> O<ESC>
+inoremap jk <ESC>
+map <C-n> :NERDTreeToggle<CR>
+noremap <leader>l :Align
+
+" ----------------------------------------------------------------------------
+"   Language-Specific
+" ----------------------------------------------------------------------------
+
+" Python settings - PEP8 indentation
+au BufNewFile,BufRead *.py set tabstop=3
+au BufNewFile,BufRead *.py set shiftwidth=4
+au BufNewFile,BufRead *.py set textwidth=79
+au BufNewFile,BufRead *.py set expandtab
+au BufNewFile,BufRead *.py set autoindent
+au BufNewFile,BufRead *.py set fileformat=unix
+au BufNewFile,BufRead *.py set softtabstop=4
+
+" Python settings - flag unnecessary whitespace
+" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" Pretty python code
+let python_highlight_all=1
+
+" C settings - Spacing/indentation
+au BufNewFile,BufRead *.c set tabstop=4
+au BufNewFile,BufRead *.c set softtabstop=4
+au BufNewFile,BufRead *.c set shiftwidth=4
+au BufNewFile,BufRead *.c set noexpandtab
+
+" ----------------------------------------------------------------------------
+"   Plugin Configuration
+" ----------------------------------------------------------------------------
+
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+
+" Syntastic recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" vim-airline
+set laststatus=2
+set noshowmode
+
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='base16'
+if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+endif
+let g:airline_powerline_fonts = 1
+" let g:airline_left_sep = '»'
+" let g:airline_left_sep = '▶'
+" let g:airline_right_sep = '«'
+" let g:airline_right_sep = '◀'
+" let g:airline_symbols.linenr = '␊'
+" let g:airline_symbols.linenr = '␤'
+" let g:airline_symbols.linenr = '¶'
+" let g:airline_symbols.branch = '⎇'
+" let g:airline_symbols.paste = 'ρ'
+" let g:airline_symbols.paste = 'Þ'
+" let g:airline_symbols.paste = '∥'
+" let g:airline_symbols.spell = 'Ꞩ'
+" let g:airline_symbols.notexists = '∄'
+" let g:airline_symbols.whitespace = 'Ξ'

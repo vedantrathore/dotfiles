@@ -49,7 +49,7 @@ pecho "Would you like to install powerline fonts (for vim-airline)? [y/N] "
 read -r response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-    source ./fonts/powerline-fonts/install.sh
+    source ${BASEDIR}/vendor/github/fonts/install.sh
 else
     echo "Skipped installation of powerline fonts"
 fi

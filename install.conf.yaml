@@ -3,5 +3,5 @@
 - link:
     ~/.dotfiles: ''
     ~/.vim: vim
-    ~/.vimrc: vimrc
+    ~/.vimrc: vim/vimrc
     ~/.zshrc: zshrc
