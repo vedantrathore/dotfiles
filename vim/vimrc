@@ -30,9 +30,11 @@ Plug 'nvie/vim-flake8'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -40,18 +42,11 @@ call plug#end()
 "   Base Options
 " ----------------------------------------------------------------------------
 
+" Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set clipboard=unnamed
+
 " Make backspace behave in a sane manner.
 set backspace=indent,eol,start
-
-" Centralize backups, swapfiles, and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-          set undodir=~/.vim/undo
-endif
-
-" Don't create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
 
 " Enable file type detection and do language-dependent indenting.
 filetype plugin indent on
@@ -70,6 +65,22 @@ set history=100
 
 " Incase you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
+
+" Allow cursor keys in insert mode
+set esckeys
+
+" Optimize for fast terminal connections
+set ttyfast
+
+" Add the g flag to search/replace by default
+set gdefault
+
+" Change mapleader
+let mapleader=","
+
+" Don’t add empty newlines at the end of files
+set binary
+set noeol
 
 " Searching
 set incsearch " search as characters are entered
@@ -94,6 +105,7 @@ syntax on
 " Color/theme
 set background=dark
 colorscheme solarized
+let g:solarized_termtrans=1
 highlight LineNr ctermbg=235
 
 " show trailing whitespace
@@ -192,29 +204,3 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
-" vim-airline
-set laststatus=2
-set noshowmode
-
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='base16'
-if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-endif
-let g:airline_powerline_fonts = 1
-" let g:airline_left_sep = '»'
-" let g:airline_left_sep = '▶'
-" let g:airline_right_sep = '«'
-" let g:airline_right_sep = '◀'
-" let g:airline_symbols.linenr = '␊'
-" let g:airline_symbols.linenr = '␤'
-" let g:airline_symbols.linenr = '¶'
-" let g:airline_symbols.branch = '⎇'
-" let g:airline_symbols.paste = 'ρ'
-" let g:airline_symbols.paste = 'Þ'
-" let g:airline_symbols.paste = '∥'
-" let g:airline_symbols.spell = 'Ꞩ'
-" let g:airline_symbols.notexists = '∄'
-" let g:airline_symbols.whitespace = 'Ξ'
