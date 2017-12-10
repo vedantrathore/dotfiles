@@ -6,3 +6,5 @@
     ~/.vimrc: vim/vimrc
     ~/.zshrc: zshrc
     ~/.aliases: aliases
+    ~/.tmux.conf: tmux.conf
+

@@ -6,7 +6,7 @@ export ZSH=/Users/vedantrathore/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="sobole"
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -82,10 +82,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export http_proxy="http://vedant.rathore:1070305@202.141.80.24:3128/"
-export https_proxy="http://vedant.rathore:1070305@202.141.80.24:3128/"
-#export http_proxy="http://172.16.53.111:5555/"
-#export https_proxy="http://172.16.53.111:5555/"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

@@ -35,6 +35,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tpope/vim-fugitive'
+Plug 'ervandew/supertab'
+Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
@@ -176,7 +178,7 @@ au BufNewFile,BufRead *.py set fileformat=unix
 au BufNewFile,BufRead *.py set softtabstop=4
 
 " Python settings - flag unnecessary whitespace
-" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " Pretty python code
 let python_highlight_all=1
