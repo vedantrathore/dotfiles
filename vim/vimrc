@@ -1,20 +1,20 @@
-set nocompatible              " be iMproved, required
+set nocompatible              " be improved, required
 
 " ----------------------------------------------------------------------------
-"   Plug
+"   plug
 " ----------------------------------------------------------------------------
 
-" Install vim-plug if we don't already have it
+" install vim-plug if we don't already have it
 if empty(glob("~/.vim/autoload/plug.vim"))
-    " Ensure all needed directories exist
-    if !isdirectory($HOME."/.vim/plugged")
-        silent call mkdir($HOME."/.vim/plugged", "p")
+    " ensure all needed directories exist
+    if !isdirectory($home."/.vim/plugged")
+        silent call mkdir($home."/.vim/plugged", "p")
     endif
-    if !isdirectory($HOME."/.vim/autoload")
-        silent call mkdir($HOME."/.vim/autoload", "p")
+    if !isdirectory($home."/.vim/autoload")
+        silent call mkdir($home."/.vim/autoload", "p")
     endif
-    " Download the actual plugin manager
-    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+    " download the actual plugin manager
+    execute '!curl -flo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -37,6 +37,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tomtom/tcomment_vim'
 
 call plug#end()
 
@@ -112,7 +113,7 @@ highlight LineNr ctermbg=235
 
 " show trailing whitespace
 set list
-set listchars=tab:▸\ ,trail:▫
+set listchars=tab:▸\ ,trail:·
 
 "Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
