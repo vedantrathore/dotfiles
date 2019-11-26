@@ -36,9 +36,10 @@ pecho "Cleaning/Installing/Updating Vim plugins:\n"
 
 vim -E -s <<-EOF
     :source ~/.vimrc
-    :PlugInstall
     :PlugClean
-    :qa
+    :PlugUpdate
+    :PlugInstall
+    :qall
 EOF
 
 ###############################################################################
@@ -128,44 +129,24 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install ack
       brew install findutils
       brew install fpp
-      brew install gifsicle
       brew install git
       brew install git-extras
-      brew install highlight
       brew install htop-osx
       brew install httpie
-      brew install imagemagick --with-webp
-      brew install lynx
-      brew install mongodb
-      brew install mysql
-      brew install nmap
       brew install nvm
       brew install openssl
       brew install python
       brew install python3
       brew install ruby
-      brew install sqlite
-      brew install the_silver_searcher
       brew install thefuck
       brew install tmux
-      brew install tofrodos
       brew install tree
       brew install z
       brew install autojump
-      brew install boot2docker
-      brew install cabextract
-      brew install docbook
-      brew install docker
       brew install exa
       brew install freetype
-      brew install gdbm
-      brew install gmp
       brew install go
-      brew install heroku
       brew install http-server
-      brew install icu4c
-      brew install isl
-      brew install jpeg
       brew install jq
       brew install libevent
       brew install libmpc
@@ -173,26 +154,14 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install libtiff
       brew install libtool
       brew install m-cli
-      brew install mercurial
-      brew install mpfr
       brew install neofetch
       brew install node
-      brew install numpy
-      brew install oniguruma
-      brew install psutils
-      brew install pyqt
-      brew install qt
       brew install readline
-      brew install scipy
       brew install screenfetch
       brew install screenresolution
-      brew install sip
-      brew install stow
       brew install tree
-      brew install xz
       brew install yarn
       brew install youtube-dl
-      brew install zeromq
       brew install zsh-completions
       brew install zsh-syntax-highlighting
 

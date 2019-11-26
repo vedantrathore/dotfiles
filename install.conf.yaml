@@ -2,9 +2,12 @@
 
 - link:
     ~/.dotfiles: ''
-    ~/.vim: vim
+    ~/.vim: vim/
     ~/.vimrc: vim/vimrc
     ~/.zshrc: zshrc
+    ~/.oh-my-zsh: oh-my-zsh/
     ~/.aliases: aliases
     ~/.tmux.conf: tmux.conf
 
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
