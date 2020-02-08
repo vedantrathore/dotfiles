@@ -1,14 +1,28 @@
 - clean: ['~']
 
+- shell:
+  - [git submodule update -f --init --recursive, Installing submodules]
+
+- defaults:
+    link:
+        force: true
+        create: true
+        relink: true
+    clean:
+        force: true
+
 - link:
     ~/.dotfiles: ''
+    ~/.gitconfig: gitconfig
     ~/.vim: vim/
     ~/.vimrc: vim/vimrc
     ~/.zshrc: zshrc
+    ~/.macos: macos
+    ~/.functions: functions
+    ~/.exports: exports
+    ~/.aliases: aliases
     ~/.oh-my-zsh: vendor/github/oh-my-zsh/
     ~/.aliases: aliases
     ~/.tmux.conf: tmux.conf
     ~/.antigenrc: antigenrc
 
-- shell:
-  - [git submodule update -f --init --recursive, Installing submodules]

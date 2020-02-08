@@ -68,16 +68,14 @@ if [ ! -d $HOME/.oh-my-zsh ] ; then
     # Put my ~/.zshrc file back
     rm ~/.zshrc
     mv ~/.zshrc.pre-oh-my-zsh ~/.zshrc
+    sudo chsh -s /bin/zsh
 
     # Spaceship Prompt Installation
-    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+    ln -s "vendor/github/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 
     # Zsh syntax highlighting
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
     echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
     source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 
 else
     echo "Oh My Zsh already installed"
@@ -102,7 +100,8 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
     if [[ $? != 0 ]] ; then
         # install Homebrew
         echo "Installing brew:"
-        ruby -e "$(curl -fsSL Homebrew/install:install@master (raw))"
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
     else
         echo "Brew already installed. Let's make sure your formulae are up to date:"
         brew update
@@ -121,15 +120,16 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install findutils
 
       # Install GNU `sed`, overwriting the built-in `sed`.
-      brew install gnu-sed --with-default-names
+      brew install gnu-sed 
 
       # Install `wget` with IRI support.
-      brew install wget --with-iri
+      brew install wget 
 
       # Install more recent versions of some macOS tools.
-      brew install vim --override-system-vi
-      brew install homebrew/dupes/grep --with-default-names
+      brew install vim 
+      brew install homebrew/dupes/grep 
       brew install homebrew/dupes/openssh
+      brew install cmake
 
       # Installing HomeBrew Cask
       brew tap caskroom/cask
@@ -189,6 +189,8 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew cask install betterzip
       brew cask install webpquicklook
       brew cask install suspicious-package
+      brew cask install keepingyouawake
+      brew cask install spectacle
 
       # Useful macos apps
       brew cask install android-file-transfer 
