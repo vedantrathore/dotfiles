@@ -34,7 +34,7 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 
 pecho "Cleaning/Installing/Updating Vim plugins:\n"
 
-vim -E -s <<-EOF
+vim -E -s <<EOF
     :source ~/.vimrc
     :PlugClean
     :PlugUpdate
@@ -68,6 +68,17 @@ if [ ! -d $HOME/.oh-my-zsh ] ; then
     # Put my ~/.zshrc file back
     rm ~/.zshrc
     mv ~/.zshrc.pre-oh-my-zsh ~/.zshrc
+
+    # Spaceship Prompt Installation
+    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
+    # Zsh syntax highlighting
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+    echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+    source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
 else
     echo "Oh My Zsh already installed"
 fi

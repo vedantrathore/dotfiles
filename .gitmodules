@@ -4,6 +4,6 @@
 [submodule "vendor/github/fonts"]
 	path = vendor/github/fonts
 	url = https://github.com/powerline/fonts
-[submodule "oh-my-zsh"]
+[submodule "vendor/github/oh-my-zsh"]
 	path = vendor/github/oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh/
+	url = https://github.com/robbyrussell/oh-my-zsh

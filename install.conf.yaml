@@ -5,9 +5,10 @@
     ~/.vim: vim/
     ~/.vimrc: vim/vimrc
     ~/.zshrc: zshrc
-    ~/.oh-my-zsh: oh-my-zsh/
+    ~/.oh-my-zsh: vendor/github/oh-my-zsh/
     ~/.aliases: aliases
     ~/.tmux.conf: tmux.conf
+    ~/.antigenrc: antigenrc
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
+  - [git submodule update -f --init --recursive, Installing submodules]
