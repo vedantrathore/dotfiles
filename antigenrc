@@ -1,0 +1,22 @@
+antigen use oh-my-zsh
+
+if [ "$OSTYPE"="darwin15.0" ]; then
+  antigen bundle osx
+fi
+
+# Plugins.
+antigen bundle mafredri/zsh-async
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle z
+antigen bundle thefuck
+antigen bundle git-extras
+antigen bundle web-search
+antigen bundle pip
+antigen bundle aws
+antigen bundle djui/alias-tips
+
+antigen bundle denysdovhan/spaceship-prompt
+
+# Done
+antigen apply

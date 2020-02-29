@@ -5,15 +5,3 @@
 [submodule "vendor/github/fonts"]
 	path = vendor/github/fonts
 	url = https://github.com/powerline/fonts
-
-[submodule "vendor/github/oh-my-zsh"]
-	path = vendor/github/oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh
-
-[submodule "vendor/github/zsh-syntax-highlighting"]
-	path = vendor/github/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
-
-[submodule "vendor/github/spaceship-prompt"]
-	path = vendor/github/spaceship-prompt
-	url = https://github.com/denysdovhan/spaceship-prompt

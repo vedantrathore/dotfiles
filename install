@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Automated installer for vedantrathore/dotfiles usint dotbot
+# Automated installer for vedantrathore/dotfiles using dotbot
 
 function pecho() {
     local PRINT_COLOR=6
@@ -11,36 +11,11 @@ function pecho() {
     echo -ne "$(tput setaf "${PRINT_COLOR}")$1$(tput sgr0)"
 }
 
-###############################################################################
-# dotbot install
-###############################################################################
-
-pecho "Linking with dotbot:\n"
-
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CONFIG="install.conf.yaml"
 DOTBOT_DIR="vendor/github/dotbot"
 DOTBOT_BIN="bin/dotbot"
-
-cd "${BASEDIR}"
-git submodule update --init --recursive "${DOTBOT_DIR}"
-
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
-
-###############################################################################
-# Update Vim plugins
-###############################################################################
-
-pecho "Cleaning/Installing/Updating Vim plugins:\n"
-
-vim -E -s <<EOF
-    :source ~/.vimrc
-    :PlugClean
-    :PlugUpdate
-    :PlugInstall
-    :qall
-EOF
 
 ###############################################################################
 # Powerline fonts
@@ -55,7 +30,6 @@ else
     echo "Skipped installation of powerline fonts"
 fi
 
-
 ###############################################################################
 # Install zsh (oh-my-zsh) + plugins + themes
 ###############################################################################
@@ -63,24 +37,39 @@ fi
 pecho "Installing zsh (oh-my-zsh) + plugins + themes:\n"
 
 if [ ! -d $HOME/.oh-my-zsh ] ; then
+    
     echo "Installing Oh My Zsh"
-    curl -L http://install.ohmyz.sh | sh
-    # Put my ~/.zshrc file back
-    rm ~/.zshrc
-    mv ~/.zshrc.pre-oh-my-zsh ~/.zshrc
-    sudo chsh -s /bin/zsh
-
-    # Spaceship Prompt Installation
-    ln -s "vendor/github/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-
-    # Zsh syntax highlighting
-    echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
-    source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    
+    echo "Installing Antigen"
+    curl -sL git.io/antigen > $HOME/.oh-my-zsh/antigen.zsh
 else
     echo "Oh My Zsh already installed"
 fi
 
+###############################################################################
+# dotbot install
+###############################################################################
+
+pecho "Linking with dotbot:\n"
+
+cd "${BASEDIR}"
+git submodule update --init --recursive "${DOTBOT_DIR}"
+
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+
+###############################################################################
+# Update Vim plugins
+###############################################################################
+
+pecho "Cleaning/Installing/Updating Vim plugins:\n"
+
+vim -E -s -u $MYVIMRC \
+ +source $MYVIMRC \
+ +PlugClean \
+ +PlugUpdate \
+ +PlugInstall \
+ +qall \
 
 ###############################################################################
 # Install brew + formulae (macOS only)
@@ -90,7 +79,7 @@ fi
 [[ "$OSTYPE" =~ ^darwin ]] || exit 0
 
 ## install homebrew + formulae?
-pecho "Would you like to install Homebrew (http://brew.sh) + my formulae? [y/N] "
+pecho "Would you like to install Homebrew (http://brew.sh) + my formulae + configure macos settings? [y/N] "
 read -r response ; tput sgr0
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
     echo "Installing brew and formulae (z, fzf, thefuck, etc...):"
@@ -115,29 +104,45 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       # Install GNU core utilities (those that come with macOS are outdated)
       # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`
       brew install coreutils
-
-      # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
       brew install findutils
+      brew install gnu-tar
+      brew install gnu-sed
+      brew install gawk
+      brew install gnutls
+      brew install gnu-indent
+      brew install gnu-getopt
+      brew install grep
+
+      # Install some other useful utilities like `sponge`.
+      brew install moreutils
 
       # Install GNU `sed`, overwriting the built-in `sed`.
       brew install gnu-sed 
 
       # Install `wget` with IRI support.
       brew install wget 
+      
+      # Install a modern version of Zsh.
+      brew install zsh
+
+      # Install GnuPG to enable PGP-signing commits.
+      brew install gnupg
 
       # Install more recent versions of some macOS tools.
-      brew install vim 
-      brew install homebrew/dupes/grep 
-      brew install homebrew/dupes/openssh
+      brew install vim
+      brew install openssh
+      brew install screen
       brew install cmake
 
-      # Installing HomeBrew Cask
-      brew tap caskroom/cask
+      # Install font tools.
+      brew tap bramstein/webfonttools
+      brew install sfnt2woff
+      brew install sfnt2woff-zopfli
+      brew install woff2
+      brew install fontconfig
 
-      # You'll need to run through fzf's setup
-      # Note: I've already added required configuration to ~/.extras
-      # brew install fzf
-      # /usr/local/opt/fzf/install
+      # Installing HomeBrew Cask
+      brew tap homebew/cask-cask
 
       # Misc useful formulae (brew list -la | awk '{a="brew install "$9; print a}' | pbcopy)
       brew install ack
@@ -151,6 +156,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install openssl
       brew install python
       brew install python3
+      brew install pipenv
       brew install ruby
       brew install thefuck
       brew install tmux
@@ -176,8 +182,6 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install tree
       brew install yarn
       brew install youtube-dl
-      brew install zsh-completions
-      brew install zsh-syntax-highlighting
 
       # Mac OS plugins
       brew cask install qlcolorcode
@@ -191,6 +195,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew cask install suspicious-package
       brew cask install keepingyouawake
       brew cask install spectacle
+      brew cask install clipy
 
       # Useful macos apps
       brew cask install android-file-transfer 
@@ -214,9 +219,10 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
     else
         echo "Error installing brew... brew + packages not installed."
     fi
+    
+    ## Setup Mac Settings
+    source ~/.macos
 fi
 
-## Setup Mac Settings
-source ~/.macos
 
 pecho "Done!" 2

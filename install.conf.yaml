@@ -1,15 +1,13 @@
 - clean: ['~']
 
-- shell:
-  - [git submodule update -f --init --recursive, Installing submodules]
 
 - defaults:
     link:
-        force: true
-        create: true
-        relink: true
+      force: true
+      create: true
+      relink: true
     clean:
-        force: true
+      force: true
 
 - link:
     ~/.dotfiles: ''
@@ -21,8 +19,10 @@
     ~/.functions: functions
     ~/.exports: exports
     ~/.aliases: aliases
-    ~/.oh-my-zsh: vendor/github/oh-my-zsh/
-    ~/.aliases: aliases
     ~/.tmux.conf: tmux.conf
     ~/.antigenrc: antigenrc
 
+- shell:
+  - [git submodule update -f --init --recursive, Installing submodules]
+  - [chsh -s $(which zsh), Making zsh the default shell]
+  - [source ~/.zshrc, source the latest zshrc file]
