@@ -8,7 +8,9 @@ fi
 antigen bundle mafredri/zsh-async
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle z
+antigen bundle docker
 antigen bundle thefuck
 antigen bundle git-extras
 antigen bundle web-search
