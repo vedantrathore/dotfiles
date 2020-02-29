@@ -195,7 +195,10 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew cask install suspicious-package
       brew cask install keepingyouawake
       brew cask install spectacle
+<<<<<<< Updated upstream
       brew cask install clipy
+=======
+>>>>>>> Stashed changes
 
       # Useful macos apps
       brew cask install android-file-transfer 
