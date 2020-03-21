@@ -11,8 +11,6 @@ export TERM="xterm-256color" # This sets up colors properly
 export SHELL=$(which zsh)
 
 export ZSH_DISABLE_COMPFIX=true
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
 
 source $ZSH/oh-my-zsh.sh
 source $ZSH/antigen.zsh
@@ -38,8 +36,6 @@ SPACESHIP_USER_SHOW="always"
 SPACESHIP_HOST_SHOW="always"
 SPACESHIP_PROMPT_ADD_NEWLINE="false"
 SPACESHIP_PROMPT_SEPARATE_LINE="true"
-SPACESHIP_TIME_SHOW="true"
-SPACESHIP_TIME_SUFFIX=""
 SPACESHIP_USER_PREFIX=" "
 SPACESHIP_USER_SUFFIX=""
 SPACESHIP_HOST_PREFIX="@"
@@ -57,10 +53,8 @@ SPACESHIP_GIT_STATUS_STASHED=""
 SPACESHIP_GIT_STATUS_DIVERGED=""
 
 # Spaceship colors
-SPACESHIP_TIME_COLOR="009"
 SPACESHIP_USER_COLOR="046"
 SPACESHIP_HOST_COLOR="226"
-SPACESHIP_DIR_COLOR="206"
 SPACESHIP_GIT_BRANCH_COLOR="045"
 
 HIST_STAMPS="dd/mm/yyyy"
@@ -70,7 +64,7 @@ for file in ~/.{exports,aliases,functions}; do
 done;
 unset file;
 
-if [ "$OSTYPE"="darwin15.0" ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 fi
 

@@ -38,6 +38,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
+Plug 'fatih/vim-go'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'natebosch/vim-lsc'
+Plug 'natebosch/vim-lsc-dart'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'psliwka/vim-smoothie'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
 call plug#end()
 
@@ -207,3 +214,13 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+
+" Dart language server
+let g:lsc_auto_map = v:true
+
+" Coc-vim flutter
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
