@@ -127,13 +127,12 @@
 	remote = green
 
 [color "diff"]
-
-	meta = 227
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	commit = 227 bold
-	whitespace = red reverse
+  meta = "yellow bold"
+  commit = "green bold"
+  frag = "magenta bold"
+  old = "red bold"
+  new = "green bold"
+  whitespace = "red reverse"
 
 [color "status"]
 

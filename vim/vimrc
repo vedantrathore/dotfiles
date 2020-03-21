@@ -1,5 +1,6 @@
 set nocompatible              " be improved, required
 
+
 " ----------------------------------------------------------------------------
 "   plug
 " ----------------------------------------------------------------------------
@@ -177,16 +178,16 @@ noremap <leader>l :Align
 " ----------------------------------------------------------------------------
 
 " Python settings - PEP8 indentation
-au BufNewFile,BufRead *.py set tabstop=3
-au BufNewFile,BufRead *.py set shiftwidth=4
-au BufNewFile,BufRead *.py set textwidth=79
-au BufNewFile,BufRead *.py set expandtab
-au BufNewFile,BufRead *.py set autoindent
-au BufNewFile,BufRead *.py set fileformat=unix
-au BufNewFile,BufRead *.py set softtabstop=4
+au BufNewFile, BufRead *.py set tabstop=3
+au BufNewFile, BufRead *.py set shiftwidth=4
+au BufNewFile, BufRead *.py set textwidth=79
+au BufNewFile, BufRead *.py set expandtab
+au BufNewFile, BufRead *.py set autoindent
+au BufNewFile, BufRead *.py set fileformat=unix
+au BufNewFile, BufRead *.py set softtabstop=4
 
 " Python settings - flag unnecessary whitespace
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " Pretty python code
 let python_highlight_all=1
