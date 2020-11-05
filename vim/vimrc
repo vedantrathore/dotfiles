@@ -5,18 +5,19 @@ set nocompatible              " be improved, required
 "   plug
 " ----------------------------------------------------------------------------
 
+" DEPRECATED: Vim plug installation is handled in the bash script
 " install vim-plug if we don't already have it
-if empty(glob("~/.vim/autoload/plug.vim"))
-    " ensure all needed directories exist
-    if !isdirectory($home."/.vim/plugged")
-        silent call mkdir($home."/.vim/plugged", "p")
-    endif
-    if !isdirectory($home."/.vim/autoload")
-        silent call mkdir($home."/.vim/autoload", "p")
-    endif
-    " download the actual plugin manager
-    silent '!curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-endif
+" if empty(glob($HOME."/.vim/autoload/plug.vim"))
+"     " ensure all needed directories exist
+"     if !isdirectory($HOME."/.vim/plugged")
+"         silent call mkdir($HOME."/.vim/plugged", "p")
+"     endif
+"     if !isdirectory($HOME."/.vim/autoload")
+"         silent call mkdir($HOME."/.vim/autoload", "p")
+"     endif
+"     " download the actual plugin manager
+"     silent '!curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+" endif
 
 call plug#begin('~/.vim/plugged')
 
@@ -39,13 +40,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
-Plug 'fatih/vim-go'
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'natebosch/vim-lsc'
-Plug 'natebosch/vim-lsc-dart'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'psliwka/vim-smoothie'
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
+" Plug 'fatih/vim-go'
+" Plug 'dart-lang/dart-vim-plugin'
+" Plug 'natebosch/vim-lsc'
+" Plug 'natebosch/vim-lsc-dart'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'psliwka/vim-smoothie'
+" Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
 call plug#end()
 
