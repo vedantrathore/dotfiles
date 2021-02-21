@@ -188,6 +188,8 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install diff-so-fancy
       brew install pwgen
       brew install pre-commit
+      brew install android-platform-tools
+
 
       # Useful macos apps
       brew install --cask \
@@ -206,7 +208,9 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
         visual-studio-code \
         vlc \
         whatsapp \
-        spotify
+        spotify \
+        notion \
+        karabiner-elements
 
       brew cleanup
 
