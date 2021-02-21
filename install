@@ -203,9 +203,10 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew cask install keepingyouawake
       brew cask install spectacle
       brew cask install clipy
+      brew cask install kitty
+
 
       # Useful macos apps
-      brew cask install iterm2
       brew cask install android-file-transfer 
       brew cask install appcleaner 
       brew cask install cheatsheet 
