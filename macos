@@ -4,10 +4,6 @@
 # Custom macos scripts                                                        #
 ###############################################################################
 
-# Iterm2 shell integration
-curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
-source ~/.iterm2_shell_integration.zsh
-
 ###############################################################################
 # Pre-requisites                                                              #
 ###############################################################################
@@ -27,10 +23,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 
 # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "max"
-sudo scutil --set HostName "max"
-sudo scutil --set LocalHostName "max"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "max"
+sudo scutil --set ComputerName "kratos"
+sudo scutil --set HostName "kratos"
+sudo scutil --set LocalHostName "kratos"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "kratos"
 
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400

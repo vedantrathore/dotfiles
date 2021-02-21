@@ -32,4 +32,5 @@
   - [git submodule update -f --init --recursive, Installing submodules]
   - [sudo sh -c "echo $(which zsh) >> /etc/shells", Add Zsh to system shell]
   - [chsh -s $(which zsh), Making zsh the default shell]
-  - [source ~/.zshrc, source the latest zshrc file]
+  - [sudo chmod -R 755 /usr/local/share/zsh/, Securing zsh directories]
+  - [source ~/.zshrc, Sourcing the latest zshrc file]
