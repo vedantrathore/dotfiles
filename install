@@ -171,6 +171,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install go
       brew install http-server
       brew install jq
+      brew install gh
       brew install libevent
       brew install libmpc
       brew install libpng
@@ -215,6 +216,8 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
         muzzle \
         hiddenbar \
         zoom \
+        eul \
+        ngrok \ 
 
       brew cleanup
 
