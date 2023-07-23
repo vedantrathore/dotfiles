@@ -3,11 +3,13 @@
 ###############################################################################
 [user]
 	email = vedantr1998@gmail.com
-	name = vedantrathore
+	name = Vedant Rathore
 
 [github]
     user = vedantrathore
 
+[includeIf "gitdir:~/work/"]
+    path = ~/work/.gitconfig
 ###############################################################################
 # All kinds of git goodness                                                   #
 ###############################################################################
@@ -199,3 +201,10 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[pull]
+	ff = only

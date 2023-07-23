@@ -64,4 +64,9 @@ for file in ~/.{exports,aliases,functions}; do
 done;
 unset file;
 
+export PATH="$HOME/.poetry/bin:$PATH"
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
 

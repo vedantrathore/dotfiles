@@ -19,6 +19,7 @@ antigen bundle aws
 antigen bundle djui/alias-tips
 
 antigen bundle denysdovhan/spaceship-prompt
+antigen bundle jeffreytse/zsh-vi-mode
 
 # Done
 antigen apply
