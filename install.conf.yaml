@@ -1,11 +1,4 @@
-- defaults:
-    link:
-        force: true
-        create: true
-        relink: true
-
 - clean: ['~']
-
 
 - defaults:
     link:
@@ -26,11 +19,13 @@
     ~/.exports: exports
     ~/.aliases: aliases
     ~/.tmux.conf: tmux.conf
-    ~/.antigenrc: antigenrc
+    ~/.zsh_plugins.txt: zsh_plugins.txt
+    ~/.config/alacritty/alacritty.toml: alacritty.toml
+    ~/.p10k.zsh: p10k.zsh
 
 - shell:
   - [git submodule update -f --init --recursive, Installing submodules]
   - [sudo sh -c "echo $(which zsh) >> /etc/shells", Add Zsh to system shell]
   - [chsh -s $(which zsh), Making zsh the default shell]
-  - [sudo chmod -R 755 /usr/local/share/zsh/, Securing zsh directories]
-  - [source ~/.zshrc, Sourcing the latest zshrc file]
+  # - [sudo chmod -R 755 /usr/local/share/zsh/, Securing zsh directories]
+  # - [source ~/.zshrc, Sourcing the latest zshrc file]

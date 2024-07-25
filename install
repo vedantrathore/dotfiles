@@ -32,7 +32,7 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 # Powerline fonts
 ###############################################################################
 
-pecho "Would you like to install powerline fonts (for vim-airline)? [y/N] "
+pecho "Would you like to install powerline fonts ? [y/N] "
 read -r response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -52,8 +52,7 @@ if [ ! -d $HOME/.oh-my-zsh ] ; then
     echo "Installing Oh My Zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     
-    echo "Installing Antigen"
-    curl -sL git.io/antigen > $HOME/.oh-my-zsh/antigen.zsh
+    source $HOME/.zshrc
 else
     echo "Oh My Zsh already installed"
 fi
@@ -159,14 +158,12 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install openssl
       brew install python
       brew install python3
-      brew install pipenv
-      brew install ruby
       brew install thefuck
       brew install tmux
       brew install tree
-      brew install z
-      brew install autojump
-      brew install exa
+      brew install zxoide
+      brew install eza
+      brew install bat
       brew install freetype
       brew install go
       brew install http-server
@@ -181,43 +178,27 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install neofetch
       brew install node
       brew install readline
-      brew install screenfetch
-      brew install screenresolution
-      brew install tree
       brew install yarn
-      brew install youtube-dl
       brew install diff-so-fancy
       brew install pwgen
       brew install pre-commit
-      brew install android-platform-tools
+      brew install MonitorControl
 
 
       # Useful macos apps
-      brew install --cask \
-        keepingyouawake \
-        spectacle \
-        clipy \
-        kitty \
-        android-file-transfer \
-        appcleaner \
-        cheatsheet \
-        docker \
-        dropbox \
-        google-chrome \
-        lastpass \
-        transmission \
-        visual-studio-code \
-        vlc \
-        whatsapp \
-        spotify \
-        notion \
-        karabiner-elements \
-        discord \
-        muzzle \
-        hiddenbar \
-        zoom \
-        eul \
-        ngrok \ 
+      brew install --cask keepingyouawake 
+      brew install --cask spectacle 
+      brew install --cask appcleaner 
+      brew install --cask cheatsheet 
+      brew install --cask docker 
+      brew install --cask transmission 
+      brew install --cask vlc 
+      brew install --cask spotify 
+      brew install --cask muzzle 
+      brew install --cask hiddenbar 
+      brew install --cask eul 
+      brew install --cask ngrok  
+      brew install --cask raycast 
 
       brew cleanup
 

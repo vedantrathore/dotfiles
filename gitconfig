@@ -81,13 +81,12 @@
 	cp = cherry-pick
 	st = status -s
 	co = checkout
-	diff = diff --word-diff
 	dc = diff --cached
 	bls = branch -v
 	rdel = push origin --delete
 	del = branch -d
 	cob = checkout -b
-	diff = diff --color
+	diff = diff --color --word-diff
 
 [apply]
 

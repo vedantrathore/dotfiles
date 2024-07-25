@@ -1,6 +1,12 @@
 [submodule "vendor/github/dotbot"]
 	path = vendor/github/dotbot
 	url = https://github.com/anishathalye/dotbot
+	ignore = dirty
 [submodule "vendor/github/fonts"]
 	path = vendor/github/fonts
 	url = https://github.com/powerline/fonts
+	ignore = dirty
+[submodule "vendor/github/antidote"]
+	path = vendor/github/antidote
+	url = https://github.com/mattmc3/antidote.git
+	ignore = dirty

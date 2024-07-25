@@ -1,5 +1,17 @@
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$HOME/tools/flutter/bin:$PATH
+#!/bin/zsh
+# .zshrc - Zsh file loaded on interactive shell sessions.
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -10,63 +22,45 @@ export TERM="xterm-256color" # This sets up colors properly
 # set shell
 export SHELL=$(which zsh)
 
-export ZSH_DISABLE_COMPFIX=true
+function is-macos() {
+  [[ $OSTYPE == darwin* ]]
+}
 
-source $ZSH/oh-my-zsh.sh
-source $ZSH/antigen.zsh
+# Initialize antidote
+source $HOME/.dotfiles/vendor/github/antidote/antidote.zsh
+antidote load 
 
-# Initialize antigen
-antigen init $HOME/.antigenrc
-
-# Spaceship prompt settings
-SPACESHIP_PROMPT_ORDER=(
-    venv
-    user
-    host
-    dir
-    git
-    docker
-    aws
-    exit_code
-    line_sep
-    vi_mode
-    char
-)
-SPACESHIP_USER_SHOW="always"
-SPACESHIP_HOST_SHOW="always"
-SPACESHIP_PROMPT_ADD_NEWLINE="false"
-SPACESHIP_PROMPT_SEPARATE_LINE="true"
-SPACESHIP_USER_PREFIX=" "
-SPACESHIP_USER_SUFFIX=""
-SPACESHIP_HOST_PREFIX="@"
-SPACESHIP_DIR_TRUNC_REPO="false"
-SPACESHIP_DIR_TRUNC_PREFIX=".../"
-SPACESHIP_GIT_STATUS_PREFIX=""
-SPACESHIP_GIT_STATUS_SUFFIX=""
-SPACESHIP_GIT_STATUS_MODIFIED="**"
-SPACESHIP_GIT_STATUS_UNMERGED="!"
-SPACESHIP_GIT_STATUS_UNTRACKED=""
-SPACESHIP_GIT_STATUS_ADDED="*"
-SPACESHIP_GIT_STATUS_RENAMED=""
-SPACESHIP_GIT_STATUS_DELETED=""
-SPACESHIP_GIT_STATUS_STASHED=""
-SPACESHIP_GIT_STATUS_DIVERGED=""
-
-# Spaceship colors
-SPACESHIP_USER_COLOR="046"
-SPACESHIP_HOST_COLOR="226"
-SPACESHIP_GIT_BRANCH_COLOR="045"
-
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
 HIST_STAMPS="dd/mm/yyyy"
+setopt appendhistory
+setopt share_history
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-for file in ~/.{exports,aliases,functions}; do
+for file in ~/.{exports,aliases,functions,p10k.zsh}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
-export PATH="$HOME/.poetry/bin:$PATH"
-
+# Zsh options.
+setopt extended_glob
 autoload -Uz compinit
-zstyle ':completion:*' menu select
-fpath+=~/.zfunc
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 
+zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --group-directories-first --icons $realpath'
+zstyle ':fzf-tab:complete:__zxoide_z:*' fzf-preview 'eza -1 --color=always --group-directories-first --icons $realpath'
 
+eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"
+zvm_after_init_commands+=('source <(fzf --zsh)')
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export PATH=$HOME/bin:/usr/local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
