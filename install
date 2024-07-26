@@ -183,6 +183,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
       brew install pwgen
       brew install pre-commit
       brew install MonitorControl
+      brew install neovim
 
 
       # Useful macos apps

@@ -12,6 +12,8 @@ fi
 
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH=$HOME/bin:/usr/local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -61,6 +63,4 @@ zstyle ':fzf-tab:complete:__zxoide_z:*' fzf-preview 'eza -1 --color=always --gro
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 zvm_after_init_commands+=('source <(fzf --zsh)')
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export PATH=$HOME/bin:/usr/local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
