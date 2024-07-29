@@ -11,8 +11,7 @@
 - link:
     ~/.dotfiles: ''
     ~/.gitconfig: gitconfig
-    ~/.vim: vim/
-    ~/.vimrc: vim/vimrc
+    ~/.config/nvim: nvim/ 
     ~/.zshrc: zshrc
     ~/.macos: macos
     ~/.functions: functions
