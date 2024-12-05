@@ -1,0 +1,11 @@
+aliases:
+  dp: deployments
+  sec: v1/secrets
+  jo: jobs
+  cr: clusterroles
+  crp: clusterpolicies
+  np: nodepools
+  nc: nodeclaims
+  crb: clusterrolebindings
+  ro: roles
+  rb: rolebindings

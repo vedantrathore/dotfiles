@@ -63,4 +63,3 @@ zstyle ':fzf-tab:complete:__zxoide_z:*' fzf-preview 'eza -1 --color=always --gro
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 zvm_after_init_commands+=('source <(fzf --zsh)')
-

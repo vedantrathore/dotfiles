@@ -35,3 +35,6 @@ export LESS_TERMCAP_md="${yellow}";
 
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less -X';
+
+# k9s
+export K9S_CONFIG_DIR="$HOME/.config/k9s"
