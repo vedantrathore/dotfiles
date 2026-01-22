@@ -1,0 +1,33 @@
+# Brewfile.minimal - Minimal installation
+# Core packages only - suitable for servers or quick setups
+# Install with: brew bundle --file=Brewfile.minimal
+
+# =============================================================================
+# Essential Shell Tools
+# =============================================================================
+
+brew "zsh"
+brew "git"
+brew "tmux"
+brew "neovim"
+
+# =============================================================================
+# Core CLI Improvements
+# =============================================================================
+
+brew "fzf"
+brew "ripgrep"
+brew "fd"
+brew "bat"
+brew "eza"
+brew "zoxide"
+
+# =============================================================================
+# Utilities
+# =============================================================================
+
+brew "jq"
+brew "tree"
+brew "wget"
+brew "htop"
+brew "tldr"

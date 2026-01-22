@@ -1,0 +1,27 @@
+# Minimal dotbot configuration
+# Core configs only - suitable for servers or quick setups
+# Usage: ./install minimal
+
+- clean: ['~']
+
+- defaults:
+    link:
+      force: true
+      create: true
+      relink: true
+    clean:
+      force: true
+
+- link:
+    ~/.dotfiles: ''
+    ~/.gitconfig: gitconfig
+    ~/.zshrc: zshrc
+    ~/.functions: functions
+    ~/.exports: exports
+    ~/.aliases: aliases
+    ~/.tmux.conf: tmux.conf
+    ~/.zsh_plugins.txt: zsh_plugins.txt
+    ~/.p10k.zsh: p10k.zsh
+
+- shell:
+  - [git submodule update -f --init --recursive, Installing submodules]

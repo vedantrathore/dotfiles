@@ -1,0 +1,109 @@
+# GPG Configuration Template
+# Copy to ~/.gnupg/gpg.conf and customize as needed
+# This file is NOT symlinked for security reasons
+
+# =============================================================================
+# Behavior
+# =============================================================================
+
+# Disable copyright notice
+no-greeting
+
+# Disable inclusion of version string in ASCII armored output
+no-emit-version
+
+# Disable comment string in clear text signatures and ASCII armored messages
+no-comments
+
+# Display long key IDs
+keyid-format 0xlong
+
+# Display fingerprints
+with-fingerprint
+
+# Display the calculated validity of user IDs during key listings
+list-options show-uid-validity
+verify-options show-uid-validity
+
+# Try to use the GnuPG-Agent
+use-agent
+
+# =============================================================================
+# Keyserver
+# =============================================================================
+
+# Use hkps (HTTPS) protocol for key servers
+keyserver hkps://keys.openpgp.org
+
+# Retrieve keys automatically when verifying signatures
+auto-key-retrieve
+
+# When searching for keys, include keys marked as "revoked"
+keyserver-options include-revoked
+
+# =============================================================================
+# Algorithm and Cipher Preferences
+# =============================================================================
+
+# List of personal digest preferences (SHA512 preferred)
+personal-digest-preferences SHA512 SHA384 SHA256
+
+# List of personal cipher preferences
+personal-cipher-preferences AES256 AES192 AES
+
+# List of personal compression preferences
+personal-compress-preferences ZLIB BZIP2 ZIP Uncompressed
+
+# Default preferences for new keys
+default-preference-list SHA512 SHA384 SHA256 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed
+
+# Message digest algorithm used when signing a key
+cert-digest-algo SHA512
+
+# Cipher algorithm for symmetric encryption with a passphrase
+s2k-cipher-algo AES256
+
+# Digest algorithm used to mangle the passphrases
+s2k-digest-algo SHA512
+
+# Passphrase mangling mode
+s2k-mode 3
+
+# Count for passphrase mangling
+s2k-count 65011712
+
+# =============================================================================
+# Defaults
+# =============================================================================
+
+# Default key to use for signing (uncomment and set your key ID)
+# default-key 0xYOURKEYID
+
+# Encrypt to self by default (uncomment and set your key ID)
+# default-recipient-self
+
+# =============================================================================
+# Key Generation Recommendations (for reference)
+# =============================================================================
+#
+# Generate a new GPG key:
+#   gpg --full-generate-key
+#
+# Recommended choices:
+#   - Key type: ECC (sign and encrypt) - option 9
+#   - Elliptic curve: Curve 25519
+#   - Key expiration: 1-2 years (you can always extend)
+#   - Real name: Your Name
+#   - Email: your@email.com
+#
+# List your keys:
+#   gpg --list-secret-keys --keyid-format=long
+#
+# Export public key (for GitHub, etc.):
+#   gpg --armor --export YOUR_KEY_ID
+#
+# Configure Git to use GPG:
+#   git config --global user.signingkey YOUR_KEY_ID
+#   git config --global commit.gpgsign true
+#
+# =============================================================================

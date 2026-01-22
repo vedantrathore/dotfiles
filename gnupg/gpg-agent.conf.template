@@ -1,0 +1,81 @@
+# GPG Agent Configuration Template
+# Copy to ~/.gnupg/gpg-agent.conf and customize as needed
+# This file is NOT symlinked for security reasons
+
+# =============================================================================
+# Cache Settings
+# =============================================================================
+
+# Set the time a cache entry is valid (in seconds)
+# Default: 600 (10 minutes)
+# This sets it to 2 hours
+default-cache-ttl 7200
+
+# Set the maximum time a cache entry is valid (in seconds)
+# Default: 7200 (2 hours)
+# This sets it to 8 hours
+max-cache-ttl 28800
+
+# Set the time a cache entry used for SSH is valid (in seconds)
+default-cache-ttl-ssh 7200
+
+# Set the maximum time a cache entry used for SSH is valid
+max-cache-ttl-ssh 28800
+
+# =============================================================================
+# Pinentry Program
+# =============================================================================
+
+# macOS - Use pinentry-mac for GUI prompts (install with: brew install pinentry-mac)
+pinentry-program /opt/homebrew/bin/pinentry-mac
+
+# Linux alternatives (uncomment the appropriate one):
+# pinentry-program /usr/bin/pinentry-curses
+# pinentry-program /usr/bin/pinentry-gtk-2
+# pinentry-program /usr/bin/pinentry-gnome3
+
+# =============================================================================
+# SSH Support
+# =============================================================================
+
+# Enable SSH support (use GPG keys for SSH authentication)
+# Uncomment to enable
+# enable-ssh-support
+
+# =============================================================================
+# Logging (uncomment for debugging)
+# =============================================================================
+
+# log-file ~/.gnupg/gpg-agent.log
+# verbose
+
+# =============================================================================
+# Additional Options
+# =============================================================================
+
+# Allow loopback pinentry (for command line use)
+allow-loopback-pinentry
+
+# Allow preset passphrases
+allow-preset-passphrase
+
+# =============================================================================
+# Setup Instructions (for reference)
+# =============================================================================
+#
+# After copying this file:
+#
+# 1. Install pinentry-mac (macOS):
+#    brew install pinentry-mac
+#
+# 2. Reload the gpg-agent:
+#    gpgconf --kill gpg-agent
+#    gpg-agent --daemon
+#
+# 3. Test the configuration:
+#    echo "test" | gpg --clearsign
+#
+# 4. Add to shell profile (~/.zshrc or ~/.bashrc):
+#    export GPG_TTY=$(tty)
+#
+# =============================================================================

@@ -25,6 +25,8 @@
     ~/.config/yazi: yazi/
     ~/.config/atuin: atuin/
     ~/.local/bin/tmux-sessionizer: bin/tmux-sessionizer
+    ~/.ripgreprc: ripgreprc
+    ~/.fdignore: fdignore
 
 - shell:
   - [git submodule update -f --init --recursive, Installing submodules]

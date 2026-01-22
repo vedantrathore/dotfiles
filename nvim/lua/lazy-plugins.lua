@@ -23,6 +23,11 @@ require('lazy').setup({
   require 'plugins.undotree',
   require 'plugins.spectre',
   require 'plugins.lazygit',
+  require 'plugins.noice',
+  require 'plugins.trouble',
+  require 'plugins.dressing',
+  require 'plugins.treesitter-context',
+  require 'plugins.illuminate',
   {
     'christoomey/vim-tmux-navigator',
     cmd = {
@@ -61,6 +66,8 @@ require('lazy').setup({
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>g', group = '[G]it' },
+        { '<leader>x', group = 'Diagnostics' },
+        { '<leader>sn', group = '[N]oice' },
       }
     end,
   },

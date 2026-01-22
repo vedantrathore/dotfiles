@@ -57,3 +57,9 @@ export FZF_DEFAULT_OPTS='
 
 # bat (better cat) configuration
 export BAT_THEME="Catppuccin-mocha"
+
+# ripgrep configuration
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+# GPG TTY for pinentry
+export GPG_TTY=$(tty)

@@ -1,0 +1,119 @@
+# SSH Config Template
+# Copy to ~/.ssh/config and customize as needed
+# This file is NOT symlinked for security reasons
+
+# =============================================================================
+# Global Defaults
+# =============================================================================
+
+Host *
+    # Add keys to agent automatically
+    AddKeysToAgent yes
+
+    # Use macOS Keychain (comment out on Linux)
+    UseKeychain yes
+
+    # Prefer ed25519 keys
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityFile ~/.ssh/id_rsa
+
+    # Security settings
+    HashKnownHosts yes
+    VisualHostKey no
+
+    # Connection settings
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    TCPKeepAlive yes
+
+    # Compression for slow connections
+    Compression yes
+
+# =============================================================================
+# GitHub
+# =============================================================================
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github
+    # Fallback to default key if specific key doesn't exist
+    IdentityFile ~/.ssh/id_ed25519
+
+# GitHub Enterprise (uncomment and customize)
+# Host github.company.com
+#     HostName github.company.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_work
+
+# =============================================================================
+# GitLab
+# =============================================================================
+
+Host gitlab.com
+    HostName gitlab.com
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_ed25519
+
+# =============================================================================
+# Personal Servers (examples - customize as needed)
+# =============================================================================
+
+# Host homeserver
+#     HostName 192.168.1.100
+#     User admin
+#     Port 22
+#     IdentityFile ~/.ssh/id_ed25519_home
+
+# Host vps
+#     HostName your-vps.example.com
+#     User root
+#     Port 2222
+#     IdentityFile ~/.ssh/id_ed25519_vps
+
+# =============================================================================
+# Work Servers (examples - customize as needed)
+# =============================================================================
+
+# Host bastion
+#     HostName bastion.company.com
+#     User vedant
+#     IdentityFile ~/.ssh/id_ed25519_work
+#     ForwardAgent yes
+
+# Host internal-*
+#     ProxyJump bastion
+#     User vedant
+#     IdentityFile ~/.ssh/id_ed25519_work
+
+# =============================================================================
+# Cloud Providers
+# =============================================================================
+
+# AWS EC2 (example)
+# Host aws-prod
+#     HostName ec2-xx-xx-xx-xx.compute.amazonaws.com
+#     User ec2-user
+#     IdentityFile ~/.ssh/aws-key.pem
+
+# GCP (example)
+# Host gcp-vm
+#     HostName XX.XXX.XXX.XXX
+#     User your-username
+#     IdentityFile ~/.ssh/google_compute_engine
+
+# =============================================================================
+# SSH Key Generation Commands (for reference)
+# =============================================================================
+#
+# Generate ed25519 key (recommended):
+#   ssh-keygen -t ed25519 -C "your_email@example.com"
+#
+# Generate RSA key (if ed25519 not supported):
+#   ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+#
+# Add key to ssh-agent:
+#   ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+#
+# =============================================================================

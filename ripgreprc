@@ -1,0 +1,59 @@
+# ripgrep configuration
+# Set RIPGREP_CONFIG_PATH=~/.ripgreprc in exports
+
+# Smart case search (case-insensitive unless uppercase is used)
+--smart-case
+
+# Search hidden files and directories
+--hidden
+
+# Follow symbolic links
+--follow
+
+# Exclude common directories
+--glob=!.git/*
+--glob=!node_modules/*
+--glob=!vendor/*
+--glob=!.venv/*
+--glob=!__pycache__/*
+--glob=!.mypy_cache/*
+--glob=!.pytest_cache/*
+--glob=!.tox/*
+--glob=!*.egg-info/*
+--glob=!dist/*
+--glob=!build/*
+--glob=!target/*
+--glob=!.next/*
+--glob=!.nuxt/*
+--glob=!coverage/*
+--glob=!.nyc_output/*
+
+# Exclude lock files
+--glob=!package-lock.json
+--glob=!yarn.lock
+--glob=!pnpm-lock.yaml
+--glob=!Cargo.lock
+--glob=!poetry.lock
+--glob=!Gemfile.lock
+--glob=!composer.lock
+
+# Exclude minified files
+--glob=!*.min.js
+--glob=!*.min.css
+--glob=!*.bundle.js
+--glob=!*.chunk.js
+
+# Exclude source maps
+--glob=!*.map
+
+# Color configuration (Catppuccin Mocha inspired)
+--colors=line:fg:yellow
+--colors=line:style:bold
+--colors=path:fg:magenta
+--colors=path:style:bold
+--colors=match:fg:red
+--colors=match:style:bold
+
+# Limit line length in output
+--max-columns=200
+--max-columns-preview

@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: '.'
+          ignore_paths: 'vendor'
+        env:
+          SHELLCHECK_OPTS: -e SC1090 -e SC1091 -e SC2034
+
+  luacheck:
+    name: Luacheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Lua and Luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 luarocks
+          sudo luarocks install luacheck
+
+      - name: Run Luacheck
+        run: |
+          luacheck nvim/ --no-unused-args --no-max-line-length --globals vim || true
+        continue-on-error: true
+
+  dotbot-ubuntu:
+    name: Dotbot (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+
+      - name: Dry Run - Full Install
+        run: |
+          ./vendor/github/dotbot/bin/dotbot -d . -c install.conf.yaml --only link
+
+      - name: Dry Run - Minimal Install
+        run: |
+          if [ -f install.minimal.yaml ]; then
+            ./vendor/github/dotbot/bin/dotbot -d . -c install.minimal.yaml --only link
+          fi
+
+  dotbot-macos:
+    name: Dotbot (macOS)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Dry Run - Full Install
+        run: |
+          ./vendor/github/dotbot/bin/dotbot -d . -c install.conf.yaml --only link
+
+      - name: Dry Run - Minimal Install
+        run: |
+          if [ -f install.minimal.yaml ]; then
+            ./vendor/github/dotbot/bin/dotbot -d . -c install.minimal.yaml --only link
+          fi
+
+  yaml-lint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Lint YAML files
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" \
+            install.conf.yaml \
+            $(find . -name "*.yaml" -o -name "*.yml" | grep -v vendor | grep -v .git) || true
+        continue-on-error: true

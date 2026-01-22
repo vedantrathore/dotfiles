@@ -1,0 +1,89 @@
+# fd ignore file
+# Automatically read by fd when in home directory
+# Symlink to ~/.fdignore
+
+# Version control
+.git/
+.svn/
+.hg/
+
+# Dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+env/
+.virtualenv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Build outputs
+dist/
+build/
+target/
+out/
+.next/
+.nuxt/
+.output/
+.vercel/
+.netlify/
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.tox/
+*.egg-info/
+.eggs/
+coverage/
+.nyc_output/
+.parcel-cache/
+.turbo/
+
+# Logs
+*.log
+logs/
+
+# Lock files (searchable but often not wanted)
+# Uncomment if you want fd to skip these
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Large binary files
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.dmg
+*.iso
+*.jar
+*.war
+*.ear
+
+# Media files (uncomment if needed)
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.ico
+# *.svg
+# *.mp3
+# *.mp4
+# *.mov
+# *.avi

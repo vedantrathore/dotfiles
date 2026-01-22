@@ -1,21 +1,62 @@
 #!/usr/bin/env bash
 
 # Automated installer for vedantrathore/dotfiles using dotbot
+# Usage:
+#   ./install          - Interactive installation (prompts for options)
+#   ./install minimal  - Core configs only (zsh, git, tmux)
+#   ./install full     - Everything including Neovim, CLI tools, macOS settings
+
+set -e
 
 function pecho() {
     local PRINT_COLOR=6
-    if [[ ! -z "$2" ]] ; then
+    if [[ -n "$2" ]] ; then
         PRINT_COLOR=$2
     fi
-
     echo -ne "$(tput setaf "${PRINT_COLOR}")$1$(tput sgr0)"
+}
+
+function show_usage() {
+    echo "Usage: ./install [profile]"
+    echo ""
+    echo "Profiles:"
+    echo "  minimal  - Core configs only (zsh, git, tmux)"
+    echo "  full     - Everything including Neovim, CLI tools, macOS settings"
+    echo "  (none)   - Interactive installation with prompts"
+    echo ""
 }
 
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-CONFIG="install.conf.yaml"
 DOTBOT_DIR="vendor/github/dotbot"
 DOTBOT_BIN="bin/dotbot"
+
+# Determine installation profile
+PROFILE="${1:-}"
+
+case "$PROFILE" in
+    minimal)
+        CONFIG="install.minimal.yaml"
+        pecho "Running minimal installation...\n" 2
+        ;;
+    full)
+        CONFIG="install.conf.yaml"
+        pecho "Running full installation...\n" 2
+        ;;
+    -h|--help|help)
+        show_usage
+        exit 0
+        ;;
+    "")
+        CONFIG="install.conf.yaml"
+        pecho "Running interactive installation...\n" 2
+        ;;
+    *)
+        pecho "Unknown profile: $PROFILE\n" 1
+        show_usage
+        exit 1
+        ;;
+esac
 
 ###############################################################################
 # dotbot install
@@ -26,7 +67,14 @@ pecho "Linking with dotbot:\n"
 cd "${BASEDIR}"
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@:2}"
+
+# Exit early for minimal installation
+if [[ "$PROFILE" == "minimal" ]]; then
+    pecho "\nMinimal installation complete!\n" 2
+    pecho "Run './install full' for complete setup.\n"
+    exit 0
+fi
 
 ###############################################################################
 # Powerline fonts
@@ -36,7 +84,7 @@ pecho "Would you like to install powerline fonts ? [y/N] "
 read -r response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-    source ${BASEDIR}/vendor/github/fonts/install.sh
+    source "${BASEDIR}/vendor/github/fonts/install.sh"
 else
     echo "Skipped installation of powerline fonts"
 fi
@@ -47,12 +95,13 @@ fi
 
 pecho "Installing zsh (oh-my-zsh) + plugins + themes:\n"
 
-if [ ! -d $HOME/.oh-my-zsh ] ; then
-    
+if [ ! -d "$HOME/.oh-my-zsh" ] ; then
+
     echo "Installing Oh My Zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    
-    source $HOME/.zshrc
+
+    # shellcheck disable=SC1091
+    source "$HOME/.zshrc"
 else
     echo "Oh My Zsh already installed"
 fi
@@ -65,134 +114,41 @@ fi
 [[ "$OSTYPE" =~ ^darwin ]] || exit 0
 
 ## install homebrew + formulae?
-pecho "Would you like to install Homebrew (http://brew.sh) + my formulae + configure macos settings? [y/N] "
+pecho "Would you like to install Homebrew (http://brew.sh) + formulae + configure macOS settings? [y/N] "
 read -r response ; tput sgr0
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] ; then
-    echo "Installing brew and formulae (z, fzf, thefuck, etc...):"
+    echo "Installing brew and formulae:"
 
     # brew installed?
-    which -s brew
-    if [[ $? != 0 ]] ; then
+    if ! command -v brew &> /dev/null ; then
         # install Homebrew
         echo "Installing brew:"
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
-        echo "Brew already installed. Let's make sure your formulae are up to date:"
+        echo "Brew already installed. Updating..."
         brew update
         brew upgrade
     fi
 
     # Double check we've installed brew correctly
-    if command -v brew >/dev/null 2>&1 ; then
-      echo "Installing brew formulae:"
+    if command -v brew &> /dev/null ; then
+        echo "Installing packages from Brewfile:"
 
-      # Install GNU core utilities (those that come with macOS are outdated)
-      # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`
-      brew install coreutils
-      brew install findutils
-      brew install gnu-tar
-      brew install gnu-sed
-      brew install gawk
-      brew install gnutls
-      brew install gnu-indent
-      brew install gnu-getopt
-      brew install grep
+        # Use Brewfile for declarative package management
+        if [[ -f "${BASEDIR}/Brewfile" ]]; then
+            brew bundle --file="${BASEDIR}/Brewfile" || true
+        else
+            pecho "Warning: Brewfile not found, skipping brew packages\n" 3
+        fi
 
-      # Install some other useful utilities like `sponge`.
-      brew install moreutils
-
-      # Install GNU `sed`, overwriting the built-in `sed`.
-      brew install gnu-sed 
-
-      # Install `wget` with IRI support.
-      brew install wget 
-      
-      # Install a modern version of Zsh.
-      brew install zsh
-
-      # Install GnuPG to enable PGP-signing commits.
-      brew install gnupg
-
-      # Install more recent versions of some macOS tools.
-      brew install vim
-      brew install openssh
-      brew install screen
-      brew install cmake
-
-      # Install font tools.
-      brew tap bramstein/webfonttools
-      brew tap homebrew/cask-fonts
-      brew install sfnt2woff
-      brew install sfnt2woff-zopfli
-      brew install woff2
-      brew install fontconfig
-      brew install --cask font-fira-code
-
-      # Misc useful formulae (brew list -la | awk '{a="brew install "$9; print a}' | pbcopy)
-      brew install ack
-      brew install findutils
-      brew install fpp
-      brew install git
-      brew install git-extras
-      brew install htop-osx
-      brew install httpie
-      brew install nvm
-      brew install openssl
-      brew install python
-      brew install python3
-      brew install thefuck
-      brew install tmux
-      brew install tree
-      brew install zxoide
-      brew install eza
-      brew install bat
-      brew install freetype
-      brew install go
-      brew install http-server
-      brew install jq
-      brew install gh
-      brew install libevent
-      brew install libmpc
-      brew install libpng
-      brew install libtiff
-      brew install libtool
-      brew install m-cli
-      brew install neofetch
-      brew install node
-      brew install readline
-      brew install yarn
-      brew install diff-so-fancy
-      brew install pwgen
-      brew install pre-commit
-      brew install MonitorControl
-      brew install neovim
-
-
-      # Useful macos apps
-      brew install --cask keepingyouawake 
-      brew install --cask spectacle 
-      brew install --cask appcleaner 
-      brew install --cask cheatsheet 
-      brew install --cask docker 
-      brew install --cask transmission 
-      brew install --cask vlc 
-      brew install --cask spotify 
-      brew install --cask muzzle 
-      brew install --cask hiddenbar 
-      brew install --cask eul 
-      brew install --cask ngrok  
-      brew install --cask raycast 
-
-      brew cleanup
-
+        brew cleanup
     else
         echo "Error installing brew... brew + packages not installed."
     fi
-    
+
     ## Setup Mac Settings
+    # shellcheck disable=SC1090
     source ~/.macos
 fi
 
-
-pecho "Done!" 2
+pecho "Done!\n" 2
