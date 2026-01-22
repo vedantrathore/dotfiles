@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# tmux-sessionizer - Quick project session switching
+# Inspired by ThePrimeagen's tmux-sessionizer
+# Usage: ts (alias) or bind to Ctrl+f in tmux/shell
+
+# Directories to search for projects
+SEARCH_DIRS=(
+    ~/work
+    ~/personal
+    ~/projects
+    ~/.config
+)
+
+# Filter only existing directories
+existing_dirs=()
+for dir in "${SEARCH_DIRS[@]}"; do
+    [[ -d "$dir" ]] && existing_dirs+=("$dir")
+done
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    # Use fd if available, otherwise fall back to find
+    if command -v fd &> /dev/null; then
+        selected=$(fd . "${existing_dirs[@]}" --min-depth 1 --max-depth 1 --type d 2>/dev/null | fzf)
+    else
+        selected=$(find "${existing_dirs[@]}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | fzf)
+    fi
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+# If not in tmux and tmux is not running
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s "$selected_name" -c "$selected"
+    exit 0
+fi
+
+# Create new session if it doesn't exist
+if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+    tmux new-session -ds "$selected_name" -c "$selected"
+fi
+
+# Switch to the session
+if [[ -z $TMUX ]]; then
+    tmux attach-session -t "$selected_name"
+else
+    tmux switch-client -t "$selected_name"
+fi

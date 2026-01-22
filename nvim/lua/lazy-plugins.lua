@@ -18,6 +18,11 @@ require('lazy').setup({
   require 'plugins.indent_line',
   require 'plugins.lint',
   require 'plugins.autopairs',
+  require 'plugins.copilot',
+  require 'plugins.harpoon',
+  require 'plugins.undotree',
+  require 'plugins.spectre',
+  require 'plugins.lazygit',
   {
     'christoomey/vim-tmux-navigator',
     cmd = {
@@ -55,6 +60,7 @@ require('lazy').setup({
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]it' },
       }
     end,
   },

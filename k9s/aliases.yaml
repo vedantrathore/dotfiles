@@ -1,11 +1,42 @@
 aliases:
+  # Workloads
   dp: deployments
-  sec: v1/secrets
+  po: pods
+  rs: replicasets
+  sts: statefulsets
+  ds: daemonsets
   jo: jobs
+  cj: cronjobs
+
+  # Config & Storage
+  sec: v1/secrets
+  cm: configmaps
+  pv: persistentvolumes
+  pvc: persistentvolumeclaims
+
+  # Networking
+  svc: services
+  ing: ingresses
+  ep: endpoints
+  np: networkpolicies
+
+  # RBAC
   cr: clusterroles
-  crp: clusterpolicies
-  np: nodepools
-  nc: nodeclaims
   crb: clusterrolebindings
   ro: roles
   rb: rolebindings
+  sa: serviceaccounts
+
+  # Cluster
+  ns: namespaces
+  no: nodes
+  ev: events
+
+  # Scaling
+  hpa: horizontalpodautoscalers
+  vpa: verticalpodautoscalers
+
+  # Karpenter
+  npo: nodepools
+  nc: nodeclaims
+  crp: clusterpolicies

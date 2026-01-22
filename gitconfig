@@ -115,6 +115,23 @@
     # use diff-so-fancy
 	pager = diff-so-fancy | less --tabs=4 -RFX
 
+	# Alternative: use delta for even better diffs (uncomment to use instead)
+	# pager = delta
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
+	# Alternative: use delta (uncomment to use instead)
+	# diffFilter = delta --color-only
+
+# Delta configuration (install with: brew install git-delta)
+# To switch to delta, change core.pager above to "delta"
+[delta]
+	navigate = true
+	light = false
+	side-by-side = true
+	line-numbers = true
+	syntax-theme = Catppuccin-mocha
+
 [color]
 
 	# Use colors in Git commands that are capable of colored output when

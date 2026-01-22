@@ -60,3 +60,92 @@ plugins:
     args:
       - -c
       - "watch -n 5 kubectl get events --context $CONTEXT --namespace $NAMESPACE --field-selector involvedObject.name=$NAME"
+
+  # Get all resources in namespace
+  get-all:
+    shortCut: Shift-A
+    description: Get all resources in namespace
+    confirm: false
+    scopes:
+      - all
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl get all -n $NAMESPACE --context $CONTEXT | less"
+
+  # Port forward with custom port
+  port-forward:
+    shortCut: Shift-F
+    description: Port forward (8080:targetPort)
+    confirm: false
+    scopes:
+      - pods
+      - services
+    command: bash
+    background: false
+    args:
+      - -c
+      - |
+        echo "Port forwarding $NAME..."
+        kubectl port-forward --context $CONTEXT -n $NAMESPACE $NAME 8080
+
+  # Copy pod name to clipboard
+  copy-name:
+    shortCut: Ctrl-Y
+    description: Copy resource name to clipboard
+    confirm: false
+    scopes:
+      - all
+    command: bash
+    background: true
+    args:
+      - -c
+      - "echo -n $NAME | pbcopy"
+
+  # Describe resource with less
+  describe:
+    shortCut: Shift-D
+    description: Describe resource
+    confirm: false
+    scopes:
+      - all
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl describe $RESOURCE_NAME $NAME -n $NAMESPACE --context $CONTEXT | less"
+
+  # Get YAML
+  get-yaml:
+    shortCut: Shift-Y
+    description: Get YAML
+    confirm: false
+    scopes:
+      - all
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl get $RESOURCE_NAME $NAME -n $NAMESPACE --context $CONTEXT -o yaml | bat -l yaml"
+
+  # Restart deployment/statefulset
+  restart:
+    shortCut: Shift-R
+    description: Restart rollout
+    confirm: true
+    dangerous: true
+    scopes:
+      - deployments
+      - statefulsets
+      - daemonsets
+    command: kubectl
+    background: false
+    args:
+      - rollout
+      - restart
+      - $RESOURCE_NAME/$NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT

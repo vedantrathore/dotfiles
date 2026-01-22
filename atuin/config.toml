@@ -1,0 +1,86 @@
+# Atuin configuration
+# https://docs.atuin.sh/configuration/config/
+
+## General settings
+# Where to store the database
+# db_path = "~/.local/share/atuin/history.db"
+
+# How often to sync (if enabled)
+# auto_sync = true
+# sync_frequency = "1h"
+# sync_address = "https://api.atuin.sh"
+
+## Search settings
+# Which search mode to use
+# prefix: search by prefix
+# fulltext: search anywhere in the command
+# fuzzy: fuzzy search
+search_mode = "fuzzy"
+
+# Filter mode for search
+# global: search all history
+# host: search only this host
+# session: search only this session
+# directory: search only this directory
+filter_mode = "global"
+
+# Filter mode when pressing up arrow
+filter_mode_shell_up_key_binding = "directory"
+
+# Show preview of full command
+show_preview = true
+
+# Preview strategy
+# auto: show preview if command is long
+# always: always show preview
+# never: never show preview
+inline_height = 30
+
+# Style - compact or full
+style = "compact"
+
+## History settings
+# What to store
+# Don't store commands that start with space
+secrets_filter = true
+
+# Ignore commands matching patterns
+history_filter = [
+    "^cd ",
+    "^ls",
+    "^ll",
+    "^la",
+    "^clear",
+    "^exit",
+]
+
+## Key bindings
+# Use Ctrl+r for search (default)
+# Ctrl+r = search
+# Up arrow = search with current input as prefix
+
+# Disable Ctrl+p/Ctrl+n bindings (let tmux handle them)
+ctrl_n_shortcuts = false
+
+## UI settings
+# Show help in TUI
+show_help = true
+
+# Maximum number of results
+max_results = 200
+
+# Datetime format
+# %Y-%m-%d %H:%M:%S
+# %d/%m/%Y %H:%M
+# relative (e.g., "2 hours ago")
+common_prefix = ["sudo"]
+
+# Invert the UI direction
+invert = false
+
+# Enable mouse support
+mouse = true
+
+## Stats
+# Track command exit status
+# store_failed = true

@@ -70,3 +70,98 @@ alias reload="exec ${SHELL} -l"
 alias path='echo -e ${PATH//:/\\n}'
 
 alias vim='nvim'
+
+alias aws-okta-py="$HOME/work/aws-okta-py/.venv/bin/aws-okta-py"
+alias tm=task-master
+
+# Lazygit
+alias lg='lazygit'
+
+# Git shortcuts (supplement existing gitconfig aliases)
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gst='git status -sb'
+alias glog='git log --oneline --graph --decorate -20'
+alias gwip='git add -A && git commit -m "WIP"'
+alias gunwip='git reset HEAD~1'
+alias gaa='git add -A'
+alias gcm='git commit -m'
+alias gp='git push'
+alias gpl='git pull'
+alias gd='git diff'
+alias gds='git diff --staged'
+
+# Quick config editing
+alias zshconfig='nvim ~/.zshrc'
+alias nvimconfig='nvim ~/.config/nvim/'
+alias aliasconfig='nvim ~/.aliases'
+alias tmuxconfig='nvim ~/.tmux.conf'
+
+# Cheatsheet
+alias keys='glow ~/.dotfiles/cheatsheet.md'
+alias hotkeys='glow ~/.dotfiles/cheatsheet.md'
+
+# Directory stack navigation (pushd/popd)
+alias d='dirs -v | head -10'
+alias 1='cd -1'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+
+# Better cat with syntax highlighting
+alias cat='bat --paging=never'
+alias catp='bat'  # cat with pager
+
+# Better man pages with bat
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# Preview files with fzf
+alias preview='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+
+# Find and edit
+alias fe='nvim $(fzf)'
+
+# Tmux sessionizer
+alias ts='~/.local/bin/tmux-sessionizer'
+
+# ===== Modern CLI Replacements =====
+# Better htop
+alias htop='btm'
+alias top='btm'
+
+# Better du (disk usage)
+alias du='dust'
+
+# Better curl with httpie-style output
+alias curl='curlie'
+
+# Yazi file manager (y to cd into directory on exit)
+function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+}
+
+# Glow for markdown
+alias md='glow'
+alias readme='glow README.md'
+
+# GitHub dashboard
+alias ghd='gh dash'
+
+# tldr for quick help
+alias help='tldr'
+
+# just task runner
+alias j='just'
+alias jl='just --list'
+
+# VPN connection via Pritunl - uses beammeupscotty for OTP
+beammeupscotty() {
+  local otp=$("$HOME/work/beammeupscotty/.venv/bin/python" "$HOME/work/beammeupscotty/getotp.py")
+  /Applications/Pritunl.app/Contents/Resources/pritunl-client start txbc3ctxazrc7wli --password="$otp"
+}
