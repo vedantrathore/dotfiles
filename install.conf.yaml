@@ -25,8 +25,14 @@
     ~/.config/yazi: yazi/
     ~/.config/atuin: atuin/
     ~/.local/bin/tmux-sessionizer: bin/tmux-sessionizer
+    ~/.local/bin/setup-keys: bin/setup-keys
     ~/.ripgreprc: ripgreprc
     ~/.fdignore: fdignore
+    # New additions
+    ~/.config/ghostty: ghostty/
+    ~/.config/mise/config.toml: mise/config.toml
+    ~/.claude/settings.json: claude/settings.json
+    ~/.claude/CLAUDE.md: claude/CLAUDE.md
 
 - shell:
   - [git submodule update -f --init --recursive, Installing submodules]

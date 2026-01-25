@@ -1,0 +1,131 @@
+# Ghostty Configuration
+# https://ghostty.org/docs/config
+
+# =============================================================================
+# Font
+# =============================================================================
+
+font-family = "JetBrainsMono Nerd Font"
+font-size = 14
+font-thicken = true
+
+# Disable ligatures if you prefer
+# font-feature = -calt
+# font-feature = -liga
+# font-feature = -dlig
+
+# =============================================================================
+# Window
+# =============================================================================
+
+window-padding-x = 10
+window-padding-y = 8
+window-decoration = true
+window-save-state = always
+macos-titlebar-style = tabs
+macos-option-as-alt = true
+
+# Initial window size (columns x rows)
+window-width = 160
+window-height = 45
+
+# =============================================================================
+# Cursor
+# =============================================================================
+
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = cursor
+
+# =============================================================================
+# Scrollback
+# =============================================================================
+
+scrollback-limit = 50000
+
+# =============================================================================
+# Clipboard
+# =============================================================================
+
+copy-on-select = clipboard
+clipboard-paste-protection = false
+
+# =============================================================================
+# Theme - Catppuccin Mocha
+# =============================================================================
+
+theme = catppuccin-mocha
+
+# Manual colors (if theme not available, uncomment these)
+# background = 1e1e2e
+# foreground = cdd6f4
+# selection-background = 45475a
+# selection-foreground = cdd6f4
+# cursor-color = f5e0dc
+# cursor-text = 1e1e2e
+
+# Normal colors
+# palette = 0=#45475a
+# palette = 1=#f38ba8
+# palette = 2=#a6e3a1
+# palette = 3=#f9e2af
+# palette = 4=#89b4fa
+# palette = 5=#f5c2e7
+# palette = 6=#94e2d5
+# palette = 7=#bac2de
+
+# Bright colors
+# palette = 8=#585b70
+# palette = 9=#f38ba8
+# palette = 10=#a6e3a1
+# palette = 11=#f9e2af
+# palette = 12=#89b4fa
+# palette = 13=#f5c2e7
+# palette = 14=#94e2d5
+# palette = 15=#a6adc8
+
+# =============================================================================
+# Keybindings
+# =============================================================================
+
+# Quick tab navigation (cmd+number)
+keybind = super+one=goto_tab:1
+keybind = super+two=goto_tab:2
+keybind = super+three=goto_tab:3
+keybind = super+four=goto_tab:4
+keybind = super+five=goto_tab:5
+
+# Split navigation (matches vim/tmux)
+keybind = super+shift+h=goto_split:left
+keybind = super+shift+j=goto_split:bottom
+keybind = super+shift+k=goto_split:top
+keybind = super+shift+l=goto_split:right
+
+# Quick actions
+keybind = super+shift+enter=new_split:right
+keybind = super+alt+enter=new_split:down
+keybind = super+w=close_surface
+keybind = super+shift+w=close_tab
+
+# =============================================================================
+# Shell Integration
+# =============================================================================
+
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# =============================================================================
+# Performance
+# =============================================================================
+
+# Reduce input latency
+gtk-single-instance = true
+
+# =============================================================================
+# Misc
+# =============================================================================
+
+confirm-close-surface = false
+mouse-hide-while-typing = true
+focus-follows-mouse = false
+link-url = true

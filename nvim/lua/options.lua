@@ -60,4 +60,9 @@ vim.opt.scrolloff = 10
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 
+-- Per-project configuration
+-- Allows loading .nvim.lua, .nvimrc, or .exrc files from project directories
+-- Use this for project-specific settings like formatters, LSP configs, etc.
+vim.opt.exrc = true
+
 -- vim: ts=2 sts=2 sw=2 et

@@ -6,3 +6,4 @@
 # Machine-specific
 .DS_Store
 k9s/clusters/
+.claude/settings.local.json

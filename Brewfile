@@ -4,7 +4,6 @@
 
 # Taps
 tap "bramstein/webfonttools"
-tap "homebrew/cask-fonts"
 
 # =============================================================================
 # Core Tools
@@ -61,8 +60,20 @@ brew "jq"           # JSON processor
 brew "yq"           # YAML processor
 
 # =============================================================================
+# AI & LLM Tools
+# =============================================================================
+
+brew "llm"                # Simon Willison's LLM CLI
+brew "pipx"               # Install Python apps in isolated envs (for shell-gpt)
+
+# Note: shell-gpt installed via pipx: pipx install shell-gpt
+
+# =============================================================================
 # Development Tools
 # =============================================================================
+
+# Runtime version management
+brew "mise"               # Polyglot runtime manager (replaces nvm, pyenv, etc.)
 
 # Languages
 brew "go"

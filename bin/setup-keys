@@ -1,0 +1,229 @@
+#!/bin/bash
+# setup-keys - Interactive setup script for SSH and GPG keys
+# Usage: setup-keys [ssh|gpg|all]
+
+set -e
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+SSH_DIR="$HOME/.ssh"
+GNUPG_DIR="$HOME/.gnupg"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+success() { echo -e "${GREEN}[OK]${NC} $1"; }
+warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# ============================================================================
+# SSH Setup
+# ============================================================================
+setup_ssh() {
+    info "Setting up SSH..."
+
+    # Create .ssh directory with proper permissions
+    if [[ ! -d "$SSH_DIR" ]]; then
+        mkdir -p "$SSH_DIR"
+        chmod 700 "$SSH_DIR"
+        success "Created $SSH_DIR"
+    fi
+
+    # Copy SSH config template if config doesn't exist
+    if [[ ! -f "$SSH_DIR/config" ]]; then
+        if [[ -f "$DOTFILES_DIR/ssh/config.template" ]]; then
+            cp "$DOTFILES_DIR/ssh/config.template" "$SSH_DIR/config"
+            chmod 600 "$SSH_DIR/config"
+            success "Copied SSH config template to $SSH_DIR/config"
+            warn "Edit $SSH_DIR/config to customize your SSH settings"
+        else
+            warn "SSH config template not found at $DOTFILES_DIR/ssh/config.template"
+        fi
+    else
+        info "SSH config already exists, skipping..."
+    fi
+
+    # Generate SSH key if none exists
+    if [[ ! -f "$SSH_DIR/id_ed25519" && ! -f "$SSH_DIR/id_rsa" ]]; then
+        echo ""
+        read -p "No SSH key found. Generate a new ed25519 key? [Y/n] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+            read -p "Enter your email for the SSH key: " email
+            if [[ -n "$email" ]]; then
+                ssh-keygen -t ed25519 -C "$email" -f "$SSH_DIR/id_ed25519"
+                success "Generated SSH key at $SSH_DIR/id_ed25519"
+
+                # Add to ssh-agent
+                if [[ "$OSTYPE" == "darwin"* ]]; then
+                    ssh-add --apple-use-keychain "$SSH_DIR/id_ed25519" 2>/dev/null || ssh-add "$SSH_DIR/id_ed25519"
+                else
+                    ssh-add "$SSH_DIR/id_ed25519"
+                fi
+                success "Added SSH key to agent"
+
+                echo ""
+                info "Your public key (copy this to GitHub/GitLab):"
+                echo ""
+                cat "$SSH_DIR/id_ed25519.pub"
+                echo ""
+            fi
+        fi
+    else
+        success "SSH key already exists"
+    fi
+
+    # Test GitHub connection
+    echo ""
+    read -p "Test SSH connection to GitHub? [Y/n] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+        info "Testing GitHub SSH connection..."
+        ssh -T git@github.com 2>&1 || true
+    fi
+}
+
+# ============================================================================
+# GPG Setup
+# ============================================================================
+setup_gpg() {
+    info "Setting up GPG..."
+
+    # Create .gnupg directory with proper permissions
+    if [[ ! -d "$GNUPG_DIR" ]]; then
+        mkdir -p "$GNUPG_DIR"
+        chmod 700 "$GNUPG_DIR"
+        success "Created $GNUPG_DIR"
+    fi
+
+    # Copy GPG config templates
+    if [[ ! -f "$GNUPG_DIR/gpg.conf" ]]; then
+        if [[ -f "$DOTFILES_DIR/gnupg/gpg.conf.template" ]]; then
+            cp "$DOTFILES_DIR/gnupg/gpg.conf.template" "$GNUPG_DIR/gpg.conf"
+            chmod 600 "$GNUPG_DIR/gpg.conf"
+            success "Copied gpg.conf template"
+        fi
+    else
+        info "gpg.conf already exists, skipping..."
+    fi
+
+    if [[ ! -f "$GNUPG_DIR/gpg-agent.conf" ]]; then
+        if [[ -f "$DOTFILES_DIR/gnupg/gpg-agent.conf.template" ]]; then
+            cp "$DOTFILES_DIR/gnupg/gpg-agent.conf.template" "$GNUPG_DIR/gpg-agent.conf"
+            chmod 600 "$GNUPG_DIR/gpg-agent.conf"
+            success "Copied gpg-agent.conf template"
+
+            # Adjust pinentry path for macOS/Linux
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                if [[ -f "/opt/homebrew/bin/pinentry-mac" ]]; then
+                    sed -i '' 's|pinentry-program.*|pinentry-program /opt/homebrew/bin/pinentry-mac|' "$GNUPG_DIR/gpg-agent.conf"
+                elif [[ -f "/usr/local/bin/pinentry-mac" ]]; then
+                    sed -i '' 's|pinentry-program.*|pinentry-program /usr/local/bin/pinentry-mac|' "$GNUPG_DIR/gpg-agent.conf"
+                else
+                    warn "pinentry-mac not found. Install with: brew install pinentry-mac"
+                fi
+            fi
+        fi
+    else
+        info "gpg-agent.conf already exists, skipping..."
+    fi
+
+    # List existing GPG keys
+    existing_keys=$(gpg --list-secret-keys --keyid-format=long 2>/dev/null | grep -c 'sec' || echo "0")
+
+    if [[ "$existing_keys" -eq 0 ]]; then
+        echo ""
+        read -p "No GPG key found. Generate a new key? [Y/n] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+            info "Generating GPG key..."
+            info "Recommended: Choose ECC (sign and encrypt), Curve 25519, 1-2 year expiration"
+            echo ""
+            gpg --full-generate-key
+
+            # Get the new key ID
+            key_id=$(gpg --list-secret-keys --keyid-format=long 2>/dev/null | grep 'sec' | head -1 | awk '{print $2}' | cut -d'/' -f2)
+
+            if [[ -n "$key_id" ]]; then
+                success "Generated GPG key: $key_id"
+
+                # Configure git to use GPG key
+                echo ""
+                read -p "Configure git to use this GPG key for signing? [Y/n] " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+                    git config --global user.signingkey "$key_id"
+                    git config --global commit.gpgsign true
+                    success "Git configured to sign commits with $key_id"
+                fi
+
+                # Export public key
+                echo ""
+                info "Your GPG public key (copy this to GitHub):"
+                echo ""
+                gpg --armor --export "$key_id"
+                echo ""
+            fi
+        fi
+    else
+        success "GPG key(s) already exist:"
+        gpg --list-secret-keys --keyid-format=long 2>/dev/null | grep -A 1 'sec'
+    fi
+
+    # Restart gpg-agent
+    gpgconf --kill gpg-agent 2>/dev/null || true
+    success "GPG setup complete"
+
+    # Add GPG_TTY to shell if not present
+    if ! grep -q 'GPG_TTY' ~/.zshrc 2>/dev/null && ! grep -q 'GPG_TTY' ~/.zshrc.local 2>/dev/null; then
+        echo ""
+        read -p "Add GPG_TTY export to ~/.zshrc.local? [Y/n] " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+            echo 'export GPG_TTY=$(tty)' >> ~/.zshrc.local
+            success "Added GPG_TTY to ~/.zshrc.local"
+        fi
+    fi
+}
+
+# ============================================================================
+# Main
+# ============================================================================
+main() {
+    echo ""
+    echo "=========================================="
+    echo "  SSH & GPG Key Setup Script"
+    echo "=========================================="
+    echo ""
+
+    case "${1:-all}" in
+        ssh)
+            setup_ssh
+            ;;
+        gpg)
+            setup_gpg
+            ;;
+        all|*)
+            setup_ssh
+            echo ""
+            echo "=========================================="
+            echo ""
+            setup_gpg
+            ;;
+    esac
+
+    echo ""
+    success "Setup complete!"
+    echo ""
+    info "Next steps:"
+    echo "  1. Add your SSH public key to GitHub: https://github.com/settings/keys"
+    echo "  2. Add your GPG public key to GitHub: https://github.com/settings/gpg"
+    echo "  3. Customize ~/.ssh/config for your servers"
+    echo ""
+}
+
+main "$@"

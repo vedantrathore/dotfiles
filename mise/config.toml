@@ -1,0 +1,37 @@
+# mise global configuration
+# https://mise.jdx.dev/configuration.html
+#
+# This file defines global tool versions.
+# Per-project versions can be set in .mise.toml or .tool-versions files.
+#
+# Usage:
+#   mise install        # Install all tools
+#   mise use node@20    # Set global version
+#   mise ls             # List installed versions
+#   mise outdated       # Check for updates
+
+[tools]
+# Node.js - LTS version
+node = "lts"
+
+# Python - latest stable
+python = "3.12"
+
+# Go - latest stable
+go = "1.22"
+
+# Rust - latest stable (via rustup)
+# rust = "latest"  # Uncomment if you want mise to manage Rust
+
+[settings]
+# Automatically install missing tools when entering a directory
+auto_install = true
+
+# Trust all config files (disable for stricter security)
+trusted_config_paths = ["~"]
+
+# Use verbose output for debugging
+# verbose = true
+
+# Experimental features
+experimental = false

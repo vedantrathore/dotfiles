@@ -198,3 +198,73 @@ function compile_ycmd() {
     cd ~/.vim/plugged/YouCompleteMe
     /usr/bin/python ./install.py --all
 }
+
+# ============================================================================
+# Shell Startup Profiling
+# ============================================================================
+
+# Profile zsh startup time (quick summary)
+# Usage: zsh-time
+function zsh-time() {
+    for i in $(seq 1 5); do
+        /usr/bin/time zsh -i -c exit 2>&1
+    done
+}
+
+# Detailed zsh startup profiling
+# Usage: zsh-profile
+# This creates a detailed breakdown of what's taking time during shell init
+function zsh-profile() {
+    echo "Profiling zsh startup..."
+    echo "========================"
+
+    # Time overall startup
+    local start=$(gdate +%s%N 2>/dev/null || date +%s)
+    zsh -i -c exit
+    local end=$(gdate +%s%N 2>/dev/null || date +%s)
+
+    echo ""
+    echo "Quick timing (5 runs):"
+    zsh-time
+
+    echo ""
+    echo "For detailed profiling, add these lines to the TOP of ~/.zshrc:"
+    echo "  zmodload zsh/zprof"
+    echo ""
+    echo "And add this line to the BOTTOM of ~/.zshrc:"
+    echo "  zprof"
+    echo ""
+    echo "Then open a new shell to see the profiling output."
+}
+
+# Profile neovim startup time
+# Usage: nvim-time [file]
+function nvim-time() {
+    local file="${1:-.}"
+    echo "Profiling nvim startup..."
+    echo "========================"
+
+    # Quick timing
+    echo "Quick timing (5 runs):"
+    for i in $(seq 1 5); do
+        /usr/bin/time nvim --headless "+qa" 2>&1
+    done
+
+    echo ""
+    echo "Startup time breakdown:"
+    nvim --headless --startuptime /tmp/nvim-startup.log "+qa"
+    tail -20 /tmp/nvim-startup.log
+
+    echo ""
+    echo "Full log saved to: /tmp/nvim-startup.log"
+    echo "Run ':Lazy profile' in nvim for plugin-specific timing"
+}
+
+# Check which plugins are slow in nvim
+# Usage: nvim-profile
+function nvim-profile() {
+    echo "Opening nvim with profiling..."
+    echo "Once nvim opens, run :Lazy profile to see plugin load times"
+    nvim +"Lazy profile"
+}
+

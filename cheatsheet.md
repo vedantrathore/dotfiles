@@ -1,5 +1,13 @@
 # Hotkey Cheatsheet
 
+## Keybinding Precedence
+When in terminal + tmux + nvim, keybindings are processed in this order:
+1. **Neovim** (when focused) - handles most keybindings
+2. **Tmux** - `C-a` prefix commands and navigation (`C-h/j/k/l` via vim-tmux-navigator)
+3. **Zsh** - `C-r` (atuin), `C-g` (navi), `C-y` (autosuggest), `C-f` (sessionizer)
+
+Note: `C-p` and `C-n` are unbound in zsh so tmux can handle window navigation.
+
 ## Tmux (prefix = `C-a`)
 
 | Key | Action |
@@ -42,7 +50,7 @@
 | `prefix + v` | Paste buffer |
 | `prefix + V` | Choose buffer |
 
-## Neovim (leader = `\`)
+## Neovim (leader = `<space>`)
 
 | Key | Action |
 |-----|--------|
@@ -85,12 +93,45 @@
 | `<leader>S` | Spectre toggle |
 | `<leader>sw` | Search word (Spectre) |
 | `<leader>sp` | Search in file |
+| **AI (CodeCompanion)** ||
+| `<leader>aa` | AI actions menu |
+| `<leader>ac` | AI chat toggle |
+| `<leader>ae` | AI explain selection (v) |
+| `<leader>af` | AI fix selection (v) |
+| `<leader>al` | AI LSP diagnostics |
+| `<leader>at` | AI generate tests (v) |
+| `<leader>ad` | AI generate docs (v) |
+| `ga` | Add selection to AI chat (v) |
+| **Inline AI (Avante)** ||
+| `<leader>ia` | Avante: Ask AI |
+| `<leader>ie` | Avante: Edit selection (v) |
+| `<leader>ir` | Avante: Refresh |
+| `<leader>it` | Avante: Toggle sidebar |
+| `<leader>if` | Avante: Focus sidebar |
+| `]]` / `[[` | Jump next/prev in Avante |
+| **Testing (Neotest)** ||
+| `<leader>nr` | Run nearest test |
+| `<leader>nf` | Run tests in file |
+| `<leader>nd` | Debug nearest test |
+| `<leader>ns` | Stop test |
+| `<leader>no` | Test output |
+| `<leader>np` | Test output panel |
+| `<leader>nm` | Test summary |
+| `<leader>nw` | Watch file tests |
+| `]n` / `[n` | Next/prev failed test |
+| **Sessions** ||
+| `<leader>wr` | Restore session |
+| `<leader>ws` | Save session |
+| `<leader>wl` | List sessions |
+| `<leader>wd` | Delete session |
 | **Other** ||
 | `<leader>u` | Undotree |
 | `<leader>q` | Diagnostic quickfix |
 | `<leader>sk` | Search keymaps |
 | `<leader>sh` | Search help |
 | `<leader>sn` | Search nvim config |
+| **Markdown** ||
+| `<leader>tm` | Toggle markdown render |
 
 ## Shell (Zsh)
 
@@ -100,6 +141,18 @@
 | `C-g` | Navi cheatsheet |
 | `C-y` | Accept autosuggestion |
 | `C-f` | Tmux sessionizer |
+
+## CLI AI Tools
+
+| Command | Action |
+|---------|--------|
+| `sgpt "query"` | Quick AI query |
+| `sgpt --code "desc"` | Generate code |
+| `sgpt --shell "desc"` | Generate shell command |
+| `cat file \| sgpt` | Pipe to AI |
+| `llm "query"` | LLM CLI query |
+| `llm -m claude-3 "q"` | Use specific model |
+| `llm logs` | View conversation history |
 
 ## K9s Plugins
 
