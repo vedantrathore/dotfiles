@@ -24,9 +24,13 @@ function is-macos() {
   [[ $OSTYPE == darwin* ]]
 }
 
-# Initialize antidote
+# Initialize antidote with static caching (much faster)
 source $HOME/.dotfiles/vendor/github/antidote/antidote.zsh
-antidote load 
+zsh_plugins=$HOME/.zsh_plugins.zsh
+if [[ ! ${zsh_plugins} -nt ${ZDOTDIR:-$HOME}/.zsh_plugins.txt ]]; then
+  antidote bundle <${ZDOTDIR:-$HOME}/.zsh_plugins.txt >|${zsh_plugins}
+fi
+source ${zsh_plugins} 
 
 # History
 HISTSIZE=5000
@@ -49,17 +53,31 @@ unset file;
 
 # Zsh options.
 setopt extended_glob
-autoload -Uz compinit && compinit -C  # -C skips security check for faster startup
+# Note: compinit is handled by belak/zsh-utils completion plugin
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 
 zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --group-directories-first --icons $realpath'
 zstyle ':fzf-tab:complete:__zxoide_z:*' fzf-preview 'eza -1 --color=always --group-directories-first --icons $realpath'
 
-eval "$(direnv hook zsh)"
-eval "$(zoxide init zsh)"
-eval "$(atuin init zsh)"  # Better shell history (Ctrl+r)
-eval "$(navi widget zsh)" # Cheatsheet widget (Ctrl+g)
+# Cache directory for shell init scripts
+_zsh_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ -d $_zsh_cache ]] || mkdir -p $_zsh_cache
+
+# Helper to cache eval output
+_cached_eval() {
+  local name=$1 cmd=$2 cache_file="$_zsh_cache/$name.zsh"
+  if [[ ! -f $cache_file || ! -s $cache_file ]]; then
+    eval "$cmd" >| $cache_file
+  fi
+  source $cache_file
+}
+
+_cached_eval direnv 'direnv hook zsh'
+_cached_eval zoxide 'zoxide init zsh'
+_cached_eval atuin 'atuin init zsh --disable-up-arrow'
+_cached_eval navi 'navi widget zsh'
+eval "$(mise activate zsh)"  # mise needs fresh eval for project switching
 zvm_after_init_commands+=('source <(fzf --zsh)')
 
 # Keybindings for productivity (must run after zsh-vi-mode init)
@@ -145,11 +163,8 @@ bw-secrets() {
   fi
 }
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
+# Google Cloud SDK (completions use autoload, not compinit)
+[[ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]] && source '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'
 
 # Source local overrides (not tracked in git)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
