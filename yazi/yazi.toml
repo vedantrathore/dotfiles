@@ -1,23 +1,29 @@
 # Yazi file manager configuration
 # https://yazi-rs.github.io/docs/configuration/yazi
 
-[manager]
+[mgr]
 ratio = [1, 3, 4]
 sort_by = "natural"
 sort_sensitive = false
 sort_reverse = false
 sort_dir_first = true
+sort_translit = true
 linemode = "size"
 show_hidden = false
 show_symlink = true
+scrolloff = 8
+mouse_events = ["click", "scroll", "touch", "move", "drag"]
+title_format = "Yazi: {cwd}"
 
 [preview]
+wrap = "yes"
 tab_size = 2
-max_width = 1000
-max_height = 1000
+max_width = 1600
+max_height = 1600
 cache_dir = ""
+image_delay = 30
 image_filter = "triangle"
-image_quality = 75
+image_quality = 80
 sixel_fraction = 15
 ueberzug_scale = 1
 ueberzug_offset = [0, 0, 0, 0]
@@ -32,22 +38,28 @@ open = [
 reveal = [
     { run = 'open -R "$1"', desc = "Reveal in Finder", for = "macos" },
 ]
+terminal = [
+    { run = '$SHELL -lc "cd \"$1\" && exec $SHELL"', block = true, desc = "Open shell here", for = "unix" },
+]
+quicklook = [
+    { run = 'qlmanage -p "$@" >/dev/null 2>&1', desc = "Quick Look", for = "macos" },
+]
 
 [open]
 rules = [
-    { name = "*/", use = ["edit", "open", "reveal"] },
-    { mime = "text/*", use = ["edit", "reveal"] },
-    { mime = "image/*", use = ["open", "reveal"] },
-    { mime = "video/*", use = ["open", "reveal"] },
-    { mime = "audio/*", use = ["open", "reveal"] },
+    { url = "*/", use = ["open", "terminal", "reveal"] },
+    { mime = "text/*", use = ["edit", "quicklook", "reveal"] },
+    { mime = "image/*", use = ["open", "quicklook", "reveal"] },
+    { mime = "video/*", use = ["open", "quicklook", "reveal"] },
+    { mime = "audio/*", use = ["open", "quicklook", "reveal"] },
     { mime = "inode/x-empty", use = ["edit", "reveal"] },
-    { mime = "application/json", use = ["edit", "reveal"] },
-    { mime = "*/javascript", use = ["edit", "reveal"] },
-    { mime = "application/zip", use = ["open", "reveal"] },
-    { mime = "application/gzip", use = ["open", "reveal"] },
-    { mime = "application/x-tar", use = ["open", "reveal"] },
-    { mime = "application/pdf", use = ["open", "reveal"] },
-    { name = "*", use = ["open", "reveal"] },
+    { mime = "application/json", use = ["edit", "quicklook", "reveal"] },
+    { mime = "*/javascript", use = ["edit", "quicklook", "reveal"] },
+    { mime = "application/pdf", use = ["open", "quicklook", "reveal"] },
+    { mime = "application/zip", use = ["open", "quicklook", "reveal"] },
+    { mime = "application/gzip", use = ["open", "quicklook", "reveal"] },
+    { mime = "application/x-tar", use = ["open", "quicklook", "reveal"] },
+    { url = "*", use = ["open", "quicklook", "reveal"] },
 ]
 
 [tasks]
@@ -59,14 +71,29 @@ image_bound = [0, 0]
 suppress_preload = false
 
 [plugin]
+prepend_fetchers = [
+    { id = "git", url = "*", run = "git", group = "git" },
+    { id = "git", url = "*/", run = "git", group = "git" },
+]
 preloaders = [
-    { name = "*", cond = "!mime", run = "mime", multi = true, prio = "high" },
+    { url = "*", cond = "!mime", run = "mime", prio = "high" },
     { mime = "image/*", run = "image" },
     { mime = "video/*", run = "video" },
     { mime = "application/pdf", run = "pdf" },
 ]
 previewers = [
-    { name = "*/", run = "folder", sync = true },
+    { url = "*/", run = "folder", sync = true },
+
+    # Rich CLI previews
+    { url = "*.md", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
+    { url = "*.markdown", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
+    { url = "*.csv", run = 'piper -- bat -p --color=always --style=plain "$1"' },
+    { url = "*.tsv", run = 'piper -- bat -p --color=always --style=plain "$1"' },
+    { url = "*.diff", run = 'piper -- delta --paging=never "$1"' },
+    { url = "*.patch", run = 'piper -- delta --paging=never "$1"' },
+    { url = "*.tar*", run = 'piper --format=url -- tar tf "$1"' },
+
+    # Built-ins
     { mime = "text/*", run = "code" },
     { mime = "*/xml", run = "code" },
     { mime = "*/javascript", run = "code" },
@@ -78,5 +105,5 @@ previewers = [
     { mime = "application/zip", run = "archive" },
     { mime = "application/gzip", run = "archive" },
     { mime = "application/x-tar", run = "archive" },
-    { name = "*", run = "file" },
+    { url = "*", run = "file" },
 ]

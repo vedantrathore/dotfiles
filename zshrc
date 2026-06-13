@@ -145,15 +145,7 @@ bw-secrets() {
   # Fetch secrets (store these in Bitwarden as Secure Notes with these names)
   echo "Fetching secrets from Bitwarden..."
 
-  local anthropic_token=$(bw get password "ANTHROPIC_AUTH_TOKEN" 2>/dev/null)
   local perplexity_key=$(bw get password "PERPLEXITY_API_KEY" 2>/dev/null)
-
-  if [[ -n "$anthropic_token" ]]; then
-    export ANTHROPIC_AUTH_TOKEN="$anthropic_token"
-    echo "✓ ANTHROPIC_AUTH_TOKEN loaded"
-  else
-    echo "✗ ANTHROPIC_AUTH_TOKEN not found in vault"
-  fi
 
   if [[ -n "$perplexity_key" ]]; then
     export PERPLEXITY_API_KEY="$perplexity_key"
@@ -168,3 +160,17 @@ bw-secrets() {
 
 # Source local overrides (not tracked in git)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/vedantrathore/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# opencode
+export PATH=/Users/vedantrathore/.opencode/bin:$PATH
+
+# bun completions
+[ -s "/Users/vedantrathore/.bun/_bun" ] && source "/Users/vedantrathore/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

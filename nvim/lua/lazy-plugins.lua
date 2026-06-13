@@ -18,7 +18,6 @@ require('lazy').setup({
   require 'plugins.indent_line',
   require 'plugins.lint',
   require 'plugins.autopairs',
-  require 'plugins.copilot',
   require 'plugins.harpoon',
   require 'plugins.undotree',
   require 'plugins.spectre',
@@ -29,9 +28,7 @@ require('lazy').setup({
   require 'plugins.treesitter-context',
   require 'plugins.illuminate',
   require 'plugins.auto-session',
-  require 'plugins.codecompanion',
   require 'plugins.neotest',
-  require 'plugins.avante',
   require 'plugins.render-markdown',
   {
     'christoomey/vim-tmux-navigator',
@@ -73,8 +70,6 @@ require('lazy').setup({
         { '<leader>g', group = '[G]it' },
         { '<leader>x', group = 'Diagnostics' },
         { '<leader>sn', group = '[N]oice' },
-        { '<leader>a', group = '[A]I Chat' },
-        { '<leader>i', group = '[I]nline AI' },
         { '<leader>n', group = '[N]eotest' },
       }
     end,

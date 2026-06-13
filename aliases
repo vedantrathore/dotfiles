@@ -71,9 +71,6 @@ alias path='echo -e ${PATH//:/\\n}'
 
 alias vim='nvim'
 
-alias aws-okta-py="$HOME/work/aws-okta-py/.venv/bin/aws-okta-py"
-alias tm=task-master
-
 # Lazygit
 alias lg='lazygit'
 
@@ -159,6 +156,8 @@ alias help='tldr'
 # just task runner
 alias j='just'
 alias jl='just --list'
+
+alias cc='claude --effort max --enable-auto-mode'
 
 # VPN connection via Pritunl - uses beammeupscotty for OTP
 beammeupscotty() {

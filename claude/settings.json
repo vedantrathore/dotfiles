@@ -1,12 +1,118 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "sonnet",
-  "enableAllProjectMcpServers": true,
+  "agentPushNotifEnabled": true,
   "alwaysThinkingEnabled": true,
-  "statusLine": {
-    "type": "command",
-    "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name // \"Claude\"'); tokens=$(echo \"$input\" | jq -r '.conversation.tokens_remaining // \"\"'); dir=$(echo \"$input\" | jq -r '.workspace.current_dir // \"\"'); style=$(echo \"$input\" | jq -r '.output_style.name // \"default\"'); dir_name=$(basename \"$dir\" 2>/dev/null || echo \"~\"); git_info=\"\"; k8s=\"\"; if git -C \"$dir\" rev-parse --git-dir >/dev/null 2>&1; then branch=$(git -C \"$dir\" branch --show-current 2>/dev/null); if [ -n \"$branch\" ]; then status=$(git -C \"$dir\" status --porcelain 2>/dev/null); ind=\"\"; echo \"$status\" | grep -q \"^[MADRC]\" && ind=\"${ind}+\"; echo \"$status\" | grep -q \"^.[MD]\" && ind=\"${ind}*\"; echo \"$status\" | grep -q \"^??\" && ind=\"${ind}?\"; [ -n \"$ind\" ] && git_info=\" ${branch}${ind}\" || git_info=\" ${branch}\"; fi; fi; ctx=$(kubectl config current-context 2>/dev/null | cut -d'/' -f2 | cut -d'_' -f2- 2>/dev/null); [ -n \"$ctx\" ] && k8s=\"\u2388 ${ctx} \"; printf \"\\033[38;5;117m%s\\033[0m\" \"$dir_name\"; [ -n \"$git_info\" ] && printf \" \\033[38;5;114m%s\\033[0m\" \"$git_info\"; printf \" \\033[38;5;244m\u2502\\033[0m \"; printf \"\\033[38;5;213m%s\\033[0m\" \"$model\"; [ -n \"$tokens\" ] && [ \"$tokens\" != \"null\" ] && printf \" \\033[38;5;244m\u2502\\033[0m \\033[38;5;179m%s\\033[0m\" \"${tokens}t\"; [ -n \"$k8s\" ] && printf \" \\033[38;5;244m\u2502\\033[0m \\033[38;5;75m%s\\033[0m\" \"$k8s\"; [ \"$style\" != \"default\" ] && [ \"$style\" != \"null\" ] && printf \" \\033[38;5;244m\u2502\\033[0m \\033[38;5;222m%s\\033[0m\" \"$style\"; printf \"\\n\""
+  "enableAllProjectMcpServers": true,
+  "enabledPlugins": {
+    "firecrawl@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "impeccable@impeccable": true,
+    "obsidian@obsidian-skills": true,
+    "playwright@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "bloop",
+    "ANTHROPIC_BASE_URL": "http://localhost:42069",
+    "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT": "http://localhost:42069/ccmetrics/v1/metrics",
+    "OTEL_EXPORTER_OTLP_METRICS_PROTOCOL": "http/protobuf",
+    "OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE": "delta",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_METRICS_INCLUDE_ACCOUNT_UUID": "false"
+  },
+  "extraKnownMarketplaces": {
+    "impeccable": {
+      "source": {
+        "repo": "pbakaus/impeccable",
+        "source": "github"
+      }
+    },
+    "obsidian-skills": {
+      "source": {
+        "repo": "kepano/obsidian-skills",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] \u0026\u0026 [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] \u0026\u0026 SUPERSET_AGENT_ID=claude \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "Bash(npm run *)",
@@ -34,8 +140,18 @@
       "Bash(cat *)",
       "Bash(head *)",
       "Bash(tail *)",
-      "Bash(wc *)"
+      "Bash(wc *)",
+      "Bash(obsidian *)"
     ],
+    "defaultMode": "auto",
     "deny": []
+  },
+  "preferredNotifChannel": "terminal_bell",
+  "skipAutoPermissionPrompt": true,
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "statusLine": {
+    "command": "python3 /Users/vedantrathore/.claude/scripts/status.py",
+    "type": "command"
   }
 }
